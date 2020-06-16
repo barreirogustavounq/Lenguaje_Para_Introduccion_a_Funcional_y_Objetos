@@ -1,5 +1,11 @@
 package o3
 
-case class Programa(operacion: Operacion)
 
+case class Programa(elementos : List[Operacion]) {
+
+  trait elementos {
+    def operaciones() : List[Operacion]
+  }
+
+}
 
