@@ -23,6 +23,7 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
       operaciones = operaciones.appended(Resta(Numero(4), Numero(0)))
       operaciones = operaciones.appended(Multiplicacion(Numero(1), Numero(4)))
       operaciones = operaciones.appended(Division(Numero(4), Numero(0)))
+      operaciones = operaciones.appended(Division(Numero(4), Numero(2)))
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = analizador.analizar(programa).map(listaRespuestas => listaRespuestas.map(r => r.gravedad))
       resultadoDeEjecutarPrograma(3).contains(Error) should equal(true)

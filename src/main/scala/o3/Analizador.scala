@@ -41,12 +41,24 @@ object DividirPorCero extends Regla{
 object OperacionRedundante extends Regla {
 
   override def aplicarRegla(operacion: Operacion): Respuesta = operacion match {
-    case Suma(Numero(0), Numero(n)) => Respuesta(Advertencia, "operacion redundante", "Suma")
-    case Suma(Numero(n), Numero(0)) => Respuesta(Advertencia, "operacion redundante", "Suma")
-    case Resta(Numero(n), Numero(0)) => Respuesta(Advertencia, "operacion redundante", "Resta")
-    case Multiplicacion(Numero(1), Numero(n)) => Respuesta(Advertencia, "operacion redundante", "Multiplicacion")
-    case Multiplicacion(Numero(n), Numero(1)) => Respuesta(Advertencia, "operacion redundante", "Multiplicacion")
-    case Division(Numero(n), Numero(1)) => Respuesta(Advertencia, "operacion redundante", "Division")
+    case Suma(Numero(0), Numero(n)) => Respuesta(Advertencia, "operacion redundante: sumar 0 retorna el mismo numero", "Suma")
+    case Suma(Numero(n), Numero(0)) => Respuesta(Advertencia, "operacion redundante: sumar 0 retorna el mismo numero", "Suma")
+    case Resta(Numero(n), Numero(0)) => Respuesta(Advertencia, "operacion redundante: restar 0 retorna el mismo numero", "Resta")
+    case Multiplicacion(Numero(1), Numero(n)) => Respuesta(Advertencia, "operacion redundante: multiplicar por 1 retorna el mismo numero ", "Multiplicacion")
+    case Multiplicacion(Numero(n), Numero(1)) => Respuesta(Advertencia, "operacion redundante: multiplicar por 1 retorna el mismo numero", "Multiplicacion")
+    case Division(Numero(n), Numero(1)) => Respuesta(Advertencia, "operacion redundante: dividir por 1 retorna el mismo numero", "Division")
+    case Mayor(Numero(n1), Numero(n2)) if (n1 > n2) => Respuesta(Advertencia, "operacion redundante: siempre returna true", "Comparacion Mayor")
+    case Mayor(Numero(n1), Numero(n2)) if (!(n1 > n2)) => Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion Mayor")
+    case Menor(Numero(n1), Numero(n2)) if (n1 < n2) => Respuesta(Advertencia, "operacion redundante: siempre returna true", "Comparacion Menor")
+    case Menor(Numero(n1), Numero(n2)) if !(n1 < n2) => Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion Menor")
+    case Igual(Numero(n1), Numero(n2)) if (n1 == n2)=> Respuesta(Advertencia, "operacion redundante: siempre returna true", "Comparacion Igual")
+    case Igual(Numero(n1), Numero(n2)) if !(n1 == n2)=> Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion Igual")
+    case Distinto(Numero(n1), Numero(n2)) if (n1 != n2)=> Respuesta(Advertencia, "operacion redundante: siempre returna true", "Comparacion Distinto")
+    case Distinto(Numero(n1), Numero(n2)) if !(n1 != n2)=> Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion Distinto")
+    case MenorOIgual(Numero(n1), Numero(n2)) if (n1 >= n2)=> Respuesta(Advertencia, "operacion redundante: siempre returna true", "Comparacion MenorIgual")
+    case MenorOIgual(Numero(n1), Numero(n2)) if !(n1 >= n2)=> Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion MenorIgual")
+    case MayorOIgual(Numero(n1), Numero(n2)) if (n1 <= n2)=> Respuesta(Advertencia, "operacion redundante: siempre returna true", "Comparacion mayorIgual")
+    case MayorOIgual(Numero(n1), Numero(n2)) if !(n1 <= n2)=> Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion mayorIgual")
     case _ => Respuesta(Ok, "no hay problemas en la operacion", operacion.getClass.getSimpleName)
   }
 }
