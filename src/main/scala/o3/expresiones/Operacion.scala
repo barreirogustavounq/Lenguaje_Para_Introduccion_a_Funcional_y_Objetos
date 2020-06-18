@@ -1,4 +1,4 @@
-package o3
+package o3.expresiones
 
 case class Suma(n1: Numero, n2: Numero) extends Operacion(n1,n2)
 case class Resta(n1: Numero, n2: Numero) extends Operacion(n1,n2)

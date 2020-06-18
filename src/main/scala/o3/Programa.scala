@@ -1,11 +1,14 @@
 package o3
 
+import o3.expresiones.Expresion
 
-case class Programa(elementos : List[Operacion]) {
+import scala.jdk.CollectionConverters._
 
-  trait elementos {
-    def operaciones() : List[Operacion]
+
+case class Programa(expresiones : List[Expresion]) {
+  var elementos : List[Expresion] = expresiones
+  def remplazarOperaciones(list: List[Expresion]): Unit ={
+    elementos = list
   }
-
 }
 

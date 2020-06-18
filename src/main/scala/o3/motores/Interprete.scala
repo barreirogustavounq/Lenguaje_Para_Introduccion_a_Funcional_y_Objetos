@@ -1,4 +1,7 @@
-package o3
+package o3.motores
+
+import o3.Programa
+import o3.expresiones._
 
 class Interprete {
 
@@ -18,7 +21,6 @@ class Interprete {
   }
 
   def ejecutar(programa: Programa): List[Expresion] = {
-    val myList = programa.elementos.map(x => ejecutarOperacion(x))
-    return myList
+     programa.elementos.map(x => ejecutarOperacion(x))
     }
 }
