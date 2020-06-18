@@ -16,6 +16,20 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
       resultadoDeEjecutarPrograma(0) should equal(Numero(5))
       resultadoDeEjecutarPrograma(1) should equal(Numero(2))
     }
+    it("Analiza las operaciones ") {
+      val analizador = new Analizador
+      var operaciones : List[Operacion] = List()
+      operaciones = operaciones.appended(Suma(Numero(2), Numero(0)))
+      operaciones = operaciones.appended(Resta(Numero(4), Numero(0)))
+      operaciones = operaciones.appended(Multiplicacion(Numero(1), Numero(4)))
+      operaciones = operaciones.appended(Division(Numero(4), Numero(0)))
+      val programa = Programa(operaciones)
+      val resultadoDeEjecutarPrograma = analizador.analizar(programa).map(listaRespuestas => listaRespuestas.map(r => r.gravedad))
+      resultadoDeEjecutarPrograma(3).contains(Error) should equal(true)
+      resultadoDeEjecutarPrograma(0).contains(Advertencia) should equal(true)
+      resultadoDeEjecutarPrograma(1).contains(Advertencia) should equal(true)
+      resultadoDeEjecutarPrograma(2).contains(Advertencia) should equal(true)
+    }
 
 //    it("interprete ejecuta operación resta") {
 //      val interprete = new Interprete

@@ -11,7 +11,7 @@ class Interprete {
   }
 
   def ejecutar(programa: Programa): List[Numero] = {
-    var myList = programa.elementos.map(x => ejecutarOperacion(x))
+    val myList = programa.elementos.map(x => ejecutarOperacion(x))
     return myList
     }
 }
