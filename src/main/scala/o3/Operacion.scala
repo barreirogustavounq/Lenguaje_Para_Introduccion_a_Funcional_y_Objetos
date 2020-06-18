@@ -11,4 +11,6 @@ case class Distinto(n1: Numero, n2: Numero) extends Operacion(n1,n2)
 case class MenorOIgual(n1: Numero, n2: Numero) extends Operacion(n1,n2)
 case class MayorOIgual(n1: Numero, n2: Numero) extends Operacion(n1,n2)
 
-class Operacion(n1: Numero, n2: Numero)
+class Operacion(n1: Numero, n2: Numero) extends Expresion
+
+trait Expresion

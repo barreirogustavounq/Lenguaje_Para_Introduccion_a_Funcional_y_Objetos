@@ -1,3 +1,3 @@
 package o3
 
-case class Numero(n: Int)
+case class Numero(n: Int) extends Expresion
