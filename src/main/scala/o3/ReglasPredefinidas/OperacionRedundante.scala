@@ -23,10 +23,10 @@ object OperacionRedundante extends Regla {
     case Igual(Numero(n1), Numero(n2)) if !(n1 == n2)=> respuesta.Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion Igual")
     case Distinto(Numero(n1), Numero(n2)) if (n1 != n2)=> respuesta.Respuesta(Advertencia, "operacion redundante: siempre returna true", "Comparacion Distinto")
     case Distinto(Numero(n1), Numero(n2)) if !(n1 != n2)=> respuesta.Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion Distinto")
-    case MenorOIgual(Numero(n1), Numero(n2)) if (n1 >= n2)=> respuesta.Respuesta(Advertencia, "operacion redundante: siempre returna true", "Comparacion MenorIgual")
-    case MenorOIgual(Numero(n1), Numero(n2)) if !(n1 >= n2)=> respuesta.Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion MenorIgual")
-    case MayorOIgual(Numero(n1), Numero(n2)) if (n1 <= n2)=> respuesta.Respuesta(Advertencia, "operacion redundante: siempre returna true", "Comparacion mayorIgual")
-    case MayorOIgual(Numero(n1), Numero(n2)) if !(n1 <= n2)=> respuesta.Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion mayorIgual")
+    case MayorOIgual(Numero(n1), Numero(n2)) if (n1 >= n2)=> respuesta.Respuesta(Advertencia, "operacion redundante: siempre returna true", "Comparacion MayorIgual")
+    case MayorOIgual(Numero(n1), Numero(n2)) if !(n1 >= n2)=> respuesta.Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion MayorIgua")
+    case MenorOIgual(Numero(n1), Numero(n2)) if (n1 <= n2)=> respuesta.Respuesta(Advertencia, "operacion redundante: siempre returna true", "Comparacion MenorIgual")
+    case MenorOIgual(Numero(n1), Numero(n2)) if !(n1 <= n2)=> respuesta.Respuesta(Advertencia, "operacion redundante: siempre returna false", "Comparacion MenorIgual")
     case _ => respuesta.Respuesta(Ok, "no hay problemas en la operacion", expresion.getClass.getSimpleName)
   }
 

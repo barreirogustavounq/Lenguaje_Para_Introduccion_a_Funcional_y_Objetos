@@ -17,7 +17,7 @@ class Interprete {
     case Distinto(Numero(n1), Numero(n2)) => Booleano(n1 != n2)
     case MayorOIgual(Numero(n1), Numero(n2)) => Booleano(n1 >= n2)
     case MenorOIgual(Numero(n1), Numero(n2)) => Booleano(n1 <= n2)
-    case _ => throw new UnsupportedOperationException("No se como interpretar" + expresion)
+    case _ => throw new UnsupportedOperationException("No se como interpretar " + expresion)
   }
 
   def ejecutar(programa: Programa): List[Expresion] = {
