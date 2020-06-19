@@ -15,4 +15,4 @@ case class MayorOIgual(n1: Numero, n2: Numero) extends Operacion(n1,n2)
 
 class Operacion(n1: Numero, n2: Numero) extends Expresion
 
-trait Expresion
+
