@@ -12,8 +12,7 @@ object DividirPorCero extends Regla{
     case Division(Numero(_), Numero(0)) => respuesta.Respuesta(Error, "No se puede dividir por cero", expresion.getClass.getSimpleName)
     case _ => respuesta.Respuesta(Ok, "no hay problemas en la operacion", expresion.getClass.getSimpleName)
   }
-  override def optimizar(expresion: Expresion): Expresion = expresion match {
-    case Division(Numero(_), Numero(0))=> throw new Exception("No es posible dividir por cero")
-    case _ => expresion
+  override def optimizar(expresion: Expresion): Expresion = {
+   expresion
   }
 }

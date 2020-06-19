@@ -45,10 +45,11 @@ object OperacionRedundante extends Regla {
     case Igual(Numero(n1), Numero(n2))if !(n1 == n2)=> Booleano(false)
     case Distinto(Numero(n1), Numero(n2))if (n1 != n2)=> Booleano(true)
     case Distinto(Numero(n1), Numero(n2))if !(n1 != n2)=>Booleano(false)
-    case MenorOIgual(Numero(n1), Numero(n2))if (n1 >= n2)=> Booleano(true)
-    case MenorOIgual(Numero(n1), Numero(n2))if !(n1 >= n2)=>Booleano(false)
-    case MayorOIgual(Numero(n1), Numero(n2))if (n1 <= n2)=> Booleano(true)
-    case MayorOIgual(Numero(n1), Numero(n2))if !(n1 <= n2)=>Booleano(false)
+    case MayorOIgual(Numero(n1), Numero(n2))if (n1 >= n2)=> Booleano(true)
+    case MayorOIgual(Numero(n1), Numero(n2))if !(n1 >= n2)=>Booleano(false)
+    case MenorOIgual(Numero(n1), Numero(n2))if (n1 <= n2)=> Booleano(true)
+    case MenorOIgual(Numero(n1), Numero(n2))if !(n1 <= n2)=>Booleano(false)
+
     case _ => expresion
   }
 }
