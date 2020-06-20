@@ -6,28 +6,33 @@ import o3.respuesta.Respuesta
 
 case class Variable(nombre : String, numero : Numero) extends Expresion
 
-case class Asignar(referencia : Referencia, numero : Numero)
-case class Referencia(nombre : String) extends Expresion {
-  var variables : Map[String, Expresion] = Map()
-
+case class Asignar(referencia : Referencia, numero : Numero) extends Expresion
+case class Referencia(nombre : String)  extends Expresion {
+  def getNombre(): String ={
+    nombre
+  }
 }
 
 class AnalizadorVariable {
-
-
-
 }
 
 object Chequeo {
 
-  def buscarReferencia(referencia: Referencia): Option[Expresion] = referencia match {
-    case Referencia(n) => referencia.variables.get(n)
+  def asignarReferencia(asignar: Asignar, programa: Programa): Unit = asignar match {
+    case Asignar(ref : Referencia, exp : Expresion) => reemplazarReferencia(ref, exp, programa)
+  }
+
+  def reemplazarReferencia(referencia : Referencia,expresion: Expresion, programa: Programa): Unit ={
+    programa.variables(referencia.nombre)= expresion
+  }
+  def buscarReferencia(referencia: Referencia, programa: Programa): Option[Expresion] = referencia match {
+    case Referencia(n) => programa.variables.get(n)
     case _ => throw new Exception("No es una referencia")
   }
 
   def chequearDuplicado(programa: Programa, variable: Variable): Respuesta ={
     var respuesta : Respuesta = Respuesta(Ok, "La variable no se encuentra duplicada", "variable" )
-    if(programa.variables.map(v=> v.nombre).contains(variable.nombre)){
+    if(programa.variables(variable.nombre).equals(variable.numero)){
       respuesta = Respuesta(Advertencia, "variable duplicada", "variable")
     }
     respuesta
@@ -35,7 +40,7 @@ object Chequeo {
 
   def chequearUsoVarableAntesDeDeclaracion(programa: Programa, referencia: Referencia) : Respuesta ={
     var respuesta : Respuesta = Respuesta(Ok, "La variable no se usa antes de su declaracion", "variable" )
-    if(programa.variables.map(v=> v.nombre).contains(referencia.nombre)){
+    if(programa.variables.contains(referencia.nombre)){
       respuesta = Respuesta(Advertencia, "Esta referencia no se encuentra definida en una variable", "variable")
     }
     respuesta
@@ -66,6 +71,18 @@ object Chequeo {
       case MenorOIgual(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
       case _ => Respuesta(Advertencia, "La variable nunca se usa", "variable")
     })
-    Respuesta(Advertencia, "","")
+      if(respuestas.map(r=> r.gravedad).contains(Advertencia)){
+        Respuesta(Ok, "La variable es utilizada este  programa", "variable" )
+      }else{
+        Respuesta(Advertencia, "La variable nunca se usa", "variable")
+      }
+  }
+
+  def chequearReferenciaValida(referencia: Referencia, programa: Programa): Respuesta ={
+    var respuesta : Respuesta = Respuesta(Ok, "Es una referencia Valida", "variable" )
+    if(!programa.variables.contains(referencia.nombre)){
+      respuesta = Respuesta(Advertencia, "Esta referencia no se encuentra definida en una variable", "variable")
+    }
+    respuesta
   }
 }
