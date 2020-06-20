@@ -4,11 +4,11 @@ import o3.Programa
 import o3.gravedad.{Advertencia, Ok}
 import o3.respuesta.Respuesta
 
-case class Variable(nombre : String, numero : Numero) extends Expresion
+case class Variable(nombre : String, valor : Option[Expresion]) extends Expresion
 
-case class Asignar(referencia : Referencia, numero : Numero) extends Expresion
+case class Asignar(referencia : Referencia, valor : Expresion) extends Expresion
 case class Referencia(nombre : String)  extends Expresion {
-  def getNombre(): String ={
+  def getNombre: String ={
     nombre
   }
 }
@@ -49,26 +49,26 @@ object Chequeo {
   def chequearVariableSinUso(programa: Programa, variable: Variable): Respuesta = {
     var respuestas : List[Respuesta] = List()
     programa.elementos.foreach( e => e match {
-      case Suma(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Suma(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Resta(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Resta(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Multiplicacion(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Multiplicacion(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Division(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Division(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Mayor(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Mayor(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Menor(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Menor(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Igual(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Igual(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Distinto(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case Distinto(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case MayorOIgual(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case MayorOIgual(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case MenorOIgual(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
-      case MenorOIgual(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada este  programa", "variable" ))
+      case Suma(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Suma(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Resta(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Resta(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Multiplicacion(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Multiplicacion(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Division(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Division(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Mayor(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Mayor(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Menor(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Menor(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Igual(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Igual(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Distinto(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case Distinto(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case MayorOIgual(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case MayorOIgual(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case MenorOIgual(Referencia(variable.nombre),_) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
+      case MenorOIgual(_, Referencia(variable.nombre)) => respuestas = respuestas.appended(Respuesta(Ok, "La variable es utilizada por este  programa", "variable" ))
       case _ => Respuesta(Advertencia, "La variable nunca se usa", "variable")
     })
       if(respuestas.map(r=> r.gravedad).contains(Advertencia)){

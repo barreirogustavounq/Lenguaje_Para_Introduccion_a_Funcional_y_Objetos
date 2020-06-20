@@ -37,12 +37,12 @@ class analizadorSpec extends AnyFunSpec with Matchers {
       operaciones = operaciones.appended(MenorOIgual(Numero(1), Numero(1)))
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = analizador.analizar(programa).map(listaRespuestas => listaRespuestas.map(r => r.descripcion))
-      resultadoDeEjecutarPrograma(0).contains("operacion redundante: siempre returna true") should equal(true)
-      resultadoDeEjecutarPrograma(1).contains("operacion redundante: siempre returna false") should equal(true)
-      resultadoDeEjecutarPrograma(2).contains("operacion redundante: siempre returna false") should equal(true)
-      resultadoDeEjecutarPrograma(3).contains("operacion redundante: siempre returna true") should equal(true)
-      resultadoDeEjecutarPrograma(4).contains("operacion redundante: siempre returna true") should equal(true)
-      resultadoDeEjecutarPrograma(5).contains("operacion redundante: siempre returna true") should equal(true)
+      resultadoDeEjecutarPrograma(0).contains("operacion redundante: siempre retorna true") should equal(true)
+      resultadoDeEjecutarPrograma(1).contains("operacion redundante: siempre retorna false") should equal(true)
+      resultadoDeEjecutarPrograma(2).contains("operacion redundante: siempre retorna false") should equal(true)
+      resultadoDeEjecutarPrograma(3).contains("operacion redundante: siempre retorna true") should equal(true)
+      resultadoDeEjecutarPrograma(4).contains("operacion redundante: siempre retorna true") should equal(true)
+      resultadoDeEjecutarPrograma(5).contains("operacion redundante: siempre retorna true") should equal(true)
     }
   }
 }

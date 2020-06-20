@@ -22,5 +22,5 @@ class Interprete {
 
   def ejecutar(programa: Programa): List[Expresion] = {
      programa.elementos.map(x => ejecutarOperacion(x))
-    }
+  }
 }
