@@ -7,7 +7,6 @@ import o3.problemas.Problema
 
 class Analizador {
 
-
   def analizarOperacion(expresion: Expresion) : List[Problema] = {
     val problemas : List[Problema] = List()
     Reglamento.reglas.foreach { r =>

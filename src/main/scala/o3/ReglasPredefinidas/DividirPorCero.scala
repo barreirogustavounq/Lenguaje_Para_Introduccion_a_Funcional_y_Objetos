@@ -8,7 +8,7 @@ import o3.reglamento.Regla
 /********************* REGLAS DEFINIDAS EN LA CONSIGNA ***********************/
 object DividirPorCero extends Regla{
   override def aplicarRegla(expresion: Expresion): Problema = expresion match {
-    case Division(Numero(_), Numero(0)) => Problema(Error, "No se puede dividir por cero", expresion.getClass.getSimpleName)
+    case Division(Numero(_), Numero(0)) => Problema(Error, "No se puede dividir por cero", expresion)
     super.aplicarRegla(expresion)
   }
   override def optimizar(expresion: Expresion): Expresion = {
