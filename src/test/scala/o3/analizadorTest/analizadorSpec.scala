@@ -38,12 +38,12 @@ class analizadorSpec extends AnyFunSpec with Matchers {
       operaciones = operaciones :+ MenorOIgual(Numero(1), Numero(1))
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = analizador.analizar(programa)
-      resultadoDeEjecutarPrograma(0) should equal(Advertencia, "operacion redundante: restar 0 retorna el mismo numero", Mayor(Numero(2), Numero(0)))
-      resultadoDeEjecutarPrograma(1) should equal(Advertencia, "comparación sin sentido: siempre retorna false", Menor(Numero(4), Numero(2)))
-      resultadoDeEjecutarPrograma(2) should equal(Advertencia, "comparación sin sentido: siempre retorna false", Igual(Numero(1), Numero(4)))
-      resultadoDeEjecutarPrograma(3) should equal(Advertencia, "comparación sin sentido: siempre retorna false", Distinto(Numero(4), Numero(0)))
-      resultadoDeEjecutarPrograma(4) should equal(Advertencia, "comparación sin sentido: siempre retorna true", MayorOIgual(Numero(4), Numero(1)))
-      resultadoDeEjecutarPrograma(5) should equal(Advertencia, "comparación sin sentido: siempre retorna true", MenorOIgual(Numero(1), Numero(1)))
+      resultadoDeEjecutarPrograma(0) should equal(Problema(Advertencia, "comparación sin sentido: siempre retorna true", Mayor(Numero(2), Numero(0))))
+      resultadoDeEjecutarPrograma(1) should equal(Problema(Advertencia, "comparación sin sentido: siempre retorna false", Menor(Numero(4), Numero(2))))
+      resultadoDeEjecutarPrograma(2) should equal(Problema(Advertencia, "comparación sin sentido: siempre retorna false", Igual(Numero(1), Numero(4))))
+      resultadoDeEjecutarPrograma(3) should equal(Problema(Advertencia, "comparación sin sentido: siempre retorna true", Distinto(Numero(4), Numero(0))))
+      resultadoDeEjecutarPrograma(4) should equal(Problema(Advertencia, "comparación sin sentido: siempre retorna true", MayorOIgual(Numero(4), Numero(1))))
+      resultadoDeEjecutarPrograma(5) should equal(Problema(Advertencia, "comparación sin sentido: siempre retorna true", MenorOIgual(Numero(1), Numero(1))))
     }
   }
 }

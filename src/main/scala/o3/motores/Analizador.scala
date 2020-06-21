@@ -7,15 +7,12 @@ import o3.problemas.Problema
 
 class Analizador {
 
-  def analizarOperacion(expresion: Expresion) : List[Problema] = {
-    var problemas : List[Problema] = List()
-    Reglamento.reglas.foreach { r =>
-      problemas = problemas :+ r.aplicarRegla(expresion)
-    }
-    problemas
+  def analizarOperacion(expresion: Expresion) : Problema = {
+    val r = Reglamento.relgaPara(expresion)
+    r.aplicarRegla(expresion)
   }
 
-  def analizar(programa: Programa) : List[List[Problema]] = {
+  def analizar(programa: Programa) : List[Problema] = {
     programa.elementos.map(op => analizarOperacion(op))
   }
 }

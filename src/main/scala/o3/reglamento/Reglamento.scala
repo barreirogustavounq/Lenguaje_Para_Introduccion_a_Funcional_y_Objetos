@@ -1,11 +1,21 @@
 package o3.reglamento
 
-import o3.ReglasPredefinidas.{ComparacionesSinSentido, DividirPorCero, OperacionRedundante}
+import o3.ReglasPredefinidas.{ComparacionesSinSentido, DividicionPorCero, OperacionRedundante}
+import o3.expresiones.{Distinto, Division, Expresion, Igual, Mayor, MayorOIgual, Menor, MenorOIgual, Multiplicacion, Numero, Resta, Suma}
 
 /****************REGLAMENTO******************************/
 object  Reglamento {
-  var reglas : List[Regla] = List(OperacionRedundante, DividirPorCero, ComparacionesSinSentido)
-  def agregarRegla(regla : Regla): Unit ={
-    reglas = reglas.appended(regla)
+  def relgaPara(expresion: Expresion) = expresion match {
+    case Division(Numero(_),Numero(0)) => DividicionPorCero
+    case Division(Numero(_),Numero(_)) => OperacionRedundante
+    case Suma(Numero(_),Numero(_)) => OperacionRedundante
+    case Resta(Numero(_),Numero(_)) => OperacionRedundante
+    case Multiplicacion(Numero(_),Numero(_)) => OperacionRedundante
+    case Mayor(Numero(_),Numero(_)) => ComparacionesSinSentido
+    case Menor(Numero(_),Numero(_)) => ComparacionesSinSentido
+    case MayorOIgual(Numero(_),Numero(_)) => ComparacionesSinSentido
+    case MenorOIgual(Numero(_),Numero(_)) => ComparacionesSinSentido
+    case Igual(Numero(_),Numero(_)) => ComparacionesSinSentido
+    case Distinto(Numero(_),Numero(_)) => ComparacionesSinSentido
   }
 }

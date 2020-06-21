@@ -6,11 +6,10 @@ import o3.reglamento.Reglamento
 
 class Optimizador() {
   def optimizarOperacion(expresion: Expresion): Expresion = {
+    val r = Reglamento.relgaPara(expresion)
     var optimizacion : List[Expresion] = List()
     var resultado = expresion
-    Reglamento.reglas.foreach{ r =>
-      optimizacion = optimizacion.appended(r.optimizar(expresion))
-    }
+    optimizacion = optimizacion.appended(r.optimizar(expresion))
     optimizacion.foreach{e =>
       if(e != expresion){
         resultado = e
