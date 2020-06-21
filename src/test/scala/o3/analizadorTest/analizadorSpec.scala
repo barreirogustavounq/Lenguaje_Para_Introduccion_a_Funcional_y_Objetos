@@ -12,12 +12,12 @@ class analizadorSpec extends AnyFunSpec with Matchers {
   describe("Analizador") {
     it("Analiza las operaciones Suma, Resta, Multiplicacion y Division ") {
       val analizador = new Analizador
-      var operaciones : List[Operacion] = List()
-      operaciones = operaciones.appended(Suma(Numero(2), Numero(0)))
-      operaciones = operaciones.appended(Resta(Numero(4), Numero(0)))
-      operaciones = operaciones.appended(Multiplicacion(Numero(1), Numero(4)))
-      operaciones = operaciones.appended(Division(Numero(4), Numero(0)))
-      operaciones = operaciones.appended(Division(Numero(4), Numero(1)))
+      val operaciones : List[Operacion] = List()
+      operaciones :+ (Suma(Numero(2), Numero(0)))
+      operaciones :+ (Resta(Numero(4), Numero(0)))
+      operaciones :+ (Multiplicacion(Numero(1), Numero(4)))
+      operaciones :+ (Division(Numero(4), Numero(0)))
+      operaciones :+ (Division(Numero(4), Numero(1)))
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = analizador.analizar(programa).map(listaRespuestas => listaRespuestas.map(r => r.gravedad))
       resultadoDeEjecutarPrograma(0).contains(Advertencia) should equal(true)
@@ -28,13 +28,13 @@ class analizadorSpec extends AnyFunSpec with Matchers {
     }
     it("Analiza las operaciones Mayor, Menor, Igual, Distinto, MayorOigual y MenorOIgual") {
       val analizador = new Analizador
-      var operaciones : List[Operacion] = List()
-      operaciones = operaciones.appended(Mayor(Numero(2), Numero(0)))
-      operaciones = operaciones.appended(Menor(Numero(4), Numero(2)))
-      operaciones = operaciones.appended(Igual(Numero(1), Numero(4)))
-      operaciones = operaciones.appended(Distinto(Numero(4), Numero(0)))
-      operaciones = operaciones.appended(MayorOIgual(Numero(4), Numero(1)))
-      operaciones = operaciones.appended(MenorOIgual(Numero(1), Numero(1)))
+      val operaciones : List[Operacion] = List()
+      operaciones :+ (Mayor(Numero(2), Numero(0)))
+      operaciones :+ (Menor(Numero(4), Numero(2)))
+      operaciones :+ (Igual(Numero(1), Numero(4)))
+      operaciones :+ (Distinto(Numero(4), Numero(0)))
+      operaciones :+ (MayorOIgual(Numero(4), Numero(1)))
+      operaciones :+ (MenorOIgual(Numero(1), Numero(1)))
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = analizador.analizar(programa).map(listaRespuestas => listaRespuestas.map(r => r.descripcion))
       resultadoDeEjecutarPrograma(0).contains("operacion redundante: siempre retorna true") should equal(true)

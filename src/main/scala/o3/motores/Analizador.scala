@@ -3,23 +3,21 @@ package o3.motores
 import o3.Programa
 import o3.expresiones.Expresion
 import o3.reglamento.Reglamento
-import o3.respuesta.Respuesta
+import o3.problemas.Problema
 
 class Analizador {
 
 
-  def analizarOperacion(expresion: Expresion) : List[Respuesta] = {
-    var respuestas : List[Respuesta] = List()
+  def analizarOperacion(expresion: Expresion) : List[Problema] = {
+    val problemas : List[Problema] = List()
     Reglamento.reglas.foreach { r =>
-      respuestas = respuestas.appended(r.aplicarRegla(expresion))
+      problemas :+ r.aplicarRegla(expresion)
     }
-    respuestas
+    problemas
   }
 
-  def analizar(programa: Programa) : List[List[Respuesta]] = {
-    val myList = programa.elementos.map(op => analizarOperacion(op))
-    println(myList)
-    myList
+  def analizar(programa: Programa) : List[List[Problema]] = {
+    programa.elementos.map(op => analizarOperacion(op))
   }
 }
 
