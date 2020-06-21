@@ -4,7 +4,7 @@ import o3.ReglasPredefinidas.{ComparacionesSinSentido, DividirPorCero, Operacion
 
 /****************REGLAMENTO******************************/
 object  Reglamento {
-  var reglas : List[Regla] = List(DividirPorCero, OperacionRedundante, ComparacionesSinSentido)
+  var reglas : List[Regla] = List(OperacionRedundante, DividirPorCero, ComparacionesSinSentido)
   def agregarRegla(regla : Regla): Unit ={
     reglas = reglas.appended(regla)
   }

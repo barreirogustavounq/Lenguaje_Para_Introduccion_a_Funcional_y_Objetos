@@ -7,18 +7,18 @@ import o3.reglamento.Regla
 
 object ComparacionesSinSentido extends Regla {
   override def aplicarRegla(expresion: Expresion): Problema = expresion match {
-    case e @ Mayor(Numero(n1), Numero(n2)) if n1 > n2 => Problema(Advertencia, "operacion redundante: siempre retorna true", e)
-    case e @ Mayor(Numero(n1), Numero(n2)) if !(n1 > n2) => Problema(Advertencia, "operacion redundante: siempre retorna false", e)
-    case e @ Menor(Numero(n1), Numero(n2)) if n1 < n2 => Problema(Advertencia, "operacion redundante: siempre retorna true", e)
-    case e @ Menor(Numero(n1), Numero(n2)) if !(n1 < n2) => Problema(Advertencia, "operacion redundante: siempre retorna false", e)
-    case e @ Igual(Numero(n1), Numero(n2)) if n1 == n2 => Problema(Advertencia, "operacion redundante: siempre retorna true", e)
-    case e @ Igual(Numero(n1), Numero(n2)) if !(n1 == n2)=> Problema(Advertencia, "operacion redundante: siempre retorna false", e)
-    case e @ Distinto(Numero(n1), Numero(n2)) if n1 != n2 => Problema(Advertencia, "operacion redundante: siempre retorna true", e)
-    case e @ Distinto(Numero(n1), Numero(n2)) if n1 == n2 => Problema(Advertencia, "operacion redundante: siempre retorna false", e)
-    case e @ MayorOIgual(Numero(n1), Numero(n2)) if n1 >= n2 => Problema(Advertencia, "operacion redundante: siempre retorna true", e)
-    case e @ MayorOIgual(Numero(n1), Numero(n2)) if !(n1 >= n2)=> Problema(Advertencia, "operacion redundante: siempre retorna false", e)
-    case e @ MenorOIgual(Numero(n1), Numero(n2)) if n1 <= n2 => Problema(Advertencia, "operacion redundante: siempre retorna true", e)
-    case e @ MenorOIgual(Numero(n1), Numero(n2)) if !(n1 <= n2)=> Problema(Advertencia, "operacion redundante: siempre retorna false", e)
+    case Mayor(Numero(n1), Numero(n2)) if n1 > n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
+    case Mayor(Numero(n1), Numero(n2)) if !(n1 > n2) => Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
+    case Menor(Numero(n1), Numero(n2)) if n1 < n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
+    case Menor(Numero(n1), Numero(n2)) if !(n1 < n2) => Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
+    case Igual(Numero(n1), Numero(n2)) if n1 == n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
+    case Igual(Numero(n1), Numero(n2)) if !(n1 == n2)=> Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
+    case Distinto(Numero(n1), Numero(n2)) if n1 != n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
+    case Distinto(Numero(n1), Numero(n2)) if n1 == n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
+    case MayorOIgual(Numero(n1), Numero(n2)) if n1 >= n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
+    case MayorOIgual(Numero(n1), Numero(n2)) if !(n1 >= n2)=> Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
+    case MenorOIgual(Numero(n1), Numero(n2)) if n1 <= n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
+    case MenorOIgual(Numero(n1), Numero(n2)) if !(n1 <= n2)=> Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
     super.aplicarRegla(expresion)
   }
 
