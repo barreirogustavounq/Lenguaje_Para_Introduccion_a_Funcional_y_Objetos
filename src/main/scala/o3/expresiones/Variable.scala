@@ -1,123 +1,175 @@
 package o3.expresiones
 
+import o3.Programa
+import o3.gravedad.{Advertencia, Ok, Error}
+import o3.problemas.Problema
+
 import scala.collection.mutable
 
-class Variable(val nombre : String, var valor : Expresion) extends Expresion
+case class Variable(val nombre : String, var valor : Expresion) extends Expresion
 
-object Variable {
-  def apply(nombre: String, valor: Expresion): Variable = {
-    val variable = new Variable(nombre, valor)
-    Referencia.agregarVariable(variable)
-    variable
-  }
 
-  def unapply(arg: Variable): Option[(String, Expresion)] = Some(arg.nombre, arg.valor)
-}
+case class Asignar(referencia: Referencia, valor : Expresion) extends Expresion
 
-case class Asignar(variable: Variable, valor : Expresion) extends Expresion
-
-object Referencia {
-  var variables : mutable.HashMap[String, Expresion] = mutable.HashMap()
-
-  def clear(): Unit = variables.clear()
-
-  def agregarVariable(variable : Variable): Unit = {
-    variables.get(variable.nombre) match {
-      case None => variables(variable.nombre) = variable.valor
-      case _ => throw new ExcepcionVariableExistente
-    }
-  }
-
-  def encontrarReferenciaCon(nombre: String): Expresion = {
-    var variable: Expresion = null
-    try {
-      variable = variables(nombre)
-    } catch {
-      case e : NoSuchElementException => throw new ExcepcionVariableInexistente
-    }
-    variable
-  }
-
-  def apply(nombre: String): Expresion = {
-    encontrarReferenciaCon(nombre)
-  }
-}
+case class Referencia(nombre : String) extends Expresion
 
 class ExcepcionVariableInexistente extends Exception
 class ExcepcionVariableExistente extends Exception
 
-//case class Referencia(nombre : String)  extends Expresion {}
 
-//class AnalizadorVariable {
-//}
-//
-//object Chequeo {
-//
-//  def asignarReferencia(asignar: Asignar, programa: Programa): Unit = asignar match {
-//    case Asignar(ref : Referencia, exp : Expresion) => reemplazarReferencia(ref, exp, programa)
-//  }
-//
-//  def reemplazarReferencia(referencia : Referencia,expresion: Expresion, programa: Programa): Unit ={
-//    programa.variables(referencia.nombre)= expresion
-//  }
-//  def buscarReferencia(referencia: Referencia, programa: Programa): Option[Expresion] = referencia match {
-//    case Referencia(n) => programa.variables.get(n)
-//    case _ => throw new Exception("No es una referencia")
-//  }
-//
-//  def chequearDuplicado(programa: Programa, variable: Variable): Problema ={
-//    var problema : Problema = Problema(Ok, "La variable no se encuentra duplicada", variable)
-//    if(programa.variables(variable.nombre).equals(variable.valor)){
-//      problema = Problema(Advertencia, "variable duplicada", variable)
-//    }
-//    problema
-//  }
-//
-//  def chequearUsoVarableAntesDeDeclaracion(programa: Programa, referencia: Referencia) : Problema ={
-//    var problema : Problema = Problema(Ok, "La variable no se usa antes de su declaracion", referencia)
-//    if(programa.variables.contains(referencia.nombre)){
-//      problema = Problema(Advertencia, "Esta referencia no se encuentra definida en una variable", referencia)
-//    }
-//    problema
-//  }
-//
-//  def chequearVariableSinUso(programa: Programa, variable: Variable): Problema = {
-//    var problemas : List[Problema] = List()
-//    programa.elementos.foreach {
-//      case Suma(Referencia(variable.nombre), _) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Suma(_, Referencia(variable.nombre)) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Resta(Referencia(variable.nombre), _) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Resta(_, Referencia(variable.nombre)) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Multiplicacion(Referencia(variable.nombre), _) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Multiplicacion(_, Referencia(variable.nombre)) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Division(Referencia(variable.nombre), _) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Division(_, Referencia(variable.nombre)) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Mayor(Referencia(variable.nombre), _) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Mayor(_, Referencia(variable.nombre)) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Menor(Referencia(variable.nombre), _) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Menor(_, Referencia(variable.nombre)) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Igual(Referencia(variable.nombre), _) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Igual(_, Referencia(variable.nombre)) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Distinto(Referencia(variable.nombre), _) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case Distinto(_, Referencia(variable.nombre)) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case MayorOIgual(Referencia(variable.nombre), _) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case MayorOIgual(_, Referencia(variable.nombre)) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case MenorOIgual(Referencia(variable.nombre), _) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case MenorOIgual(_, Referencia(variable.nombre)) => problemas = problemas :+ Problema(Ok, "La variable es utilizada por este  programa", variable)
-//      case _ => Problema(Advertencia, "La variable nunca se utiliza", variable)
-//    }
-//      if(problemas.map(r=> r.gravedad).contains(Advertencia)){
-//        Problema(Ok, "La variable es utilizada por este  programa", variable )
-//      }else{
-//        Problema(Advertencia, "La variable nunca se utiliza", variable)
-//      }
-//  }
-//
-//  def chequearReferenciaValida(referencia: Referencia, programa: Programa): Problema ={
-//    var problema : Problema = Problema(Ok, "Es una referencia Valida", referencia)
-//    if(!programa.variables.contains(referencia.nombre)){
-//      problema = Problema(Advertencia, "Esta referencia no se encuentra definida en una variable", referencia)
-//    }
-//    problema
-//  }
-//}
+class AnalizadorVariable() {
+  def analizarVariablesDuplicadas(programa: Programa): List[Problema]= {
+    var respuesta : List[Problema] = List()
+    programa.elementos.foreach( e => e match {
+      case Variable(nombre, valor) =>
+        val rta : Problema = ChequeadorVariable.chequearDuplicado(programa, Variable(nombre, valor))
+        respuesta = respuesta.appended(rta)
+        rta match {
+          case Problema(Ok, _, _) => programa.agregarVariable(Variable(nombre, valor))
+          case _ => None
+        }
+      case _ => None
+    })
+    respuesta
+  }
+  def analizarUsoDeVariablesAntesDeSuDeclaracion(programa: Programa): List[Problema]={
+    var respuesta : List[Problema] = List()
+    programa.elementos.foreach(e => e match {
+      case Variable(nombre, valor) => programa.agregarVariable(Variable(nombre, valor))
+      case Referencia(nombre) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Asignar(referencia, valor) => ChequeadorVariable.reemplazarReferencia(referencia, valor, programa)
+      case Suma(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Suma(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Resta(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Resta(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Multiplicacion(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Multiplicacion(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Division(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Division(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Mayor(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Mayor(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Menor(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Menor(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Igual(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Igual(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Distinto(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case Distinto(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case MayorOIgual(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case MayorOIgual(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case MenorOIgual(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case MenorOIgual(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearUsoVarableAntesDeDeclaracion(programa, Referencia(nombre)))
+      case _ => throw new Exception("No se como analizar la expreseion ")
+    })
+    respuesta = respuesta.filter(p => p.gravedad != Ok)
+    respuesta
+  }
+  def analizarVariablesDelaradasSinUso(programa: Programa): List[Variable] = {
+    var respuesta : List[Variable] = List()
+    var variablesReferenciadas : List[Variable] = List()
+    programa.elementos.foreach(e => e match {
+      case Variable(nombre, valor) => programa.agregarVariable(Variable(nombre, valor))
+      case Asignar(referencia, valor) => ChequeadorVariable.reemplazarReferencia(referencia, valor, programa)
+      case Referencia(nombre) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Suma(Referencia(nombre), _) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Suma(_, Referencia(nombre)) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Resta(Referencia(nombre), _) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Resta(_, Referencia(nombre)) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Multiplicacion(Referencia(nombre), _) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Multiplicacion(_, Referencia(nombre)) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Division(Referencia(nombre), _) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Division(_, Referencia(nombre)) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Mayor(Referencia(nombre), _) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Mayor(_, Referencia(nombre)) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Menor(Referencia(nombre), _) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Menor(_, Referencia(nombre)) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Igual(Referencia(nombre), _) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Igual(_, Referencia(nombre)) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Distinto(Referencia(nombre), _) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case Distinto(_, Referencia(nombre)) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case MayorOIgual(Referencia(nombre), _) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case MayorOIgual(_, Referencia(nombre)) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case MenorOIgual(Referencia(nombre), _) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case MenorOIgual(_, Referencia(nombre)) => variablesReferenciadas = variablesReferenciadas.appended(ChequeadorVariable.buscarVariable(nombre, programa))
+      case _ => throw new Exception("No se como analizar la expreseion ")
+    })
+    programa.variables.foreach( v =>
+      if(!variablesReferenciadas.contains(v)){
+        respuesta = respuesta.appended(v)
+      }
+      )
+        respuesta
+  }
+
+def analizarReferenciaValida(programa: Programa): List[Problema] ={
+    var respuesta : List[Problema] = List()
+    programa.elementos.foreach(e => e match {
+      case Referencia(nombre) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre), programa))
+      case Variable(nombre, valor) => programa.agregarVariable(Variable(nombre, valor))
+      case Asignar(referencia, valor)=> ChequeadorVariable.asignarReferencia(Asignar(referencia, valor), programa)
+      case Suma(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Suma(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Resta(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Resta(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Multiplicacion(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Multiplicacion(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Division(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Division(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Mayor(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Mayor(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Menor(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Menor(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Igual(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Igual(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Distinto(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case Distinto(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case MayorOIgual(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case MayorOIgual(_, Referencia(nombre)) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case MenorOIgual(Referencia(nombre), _) => respuesta = respuesta.appended(ChequeadorVariable.chequearReferenciaValida(Referencia(nombre),programa))
+      case _ => throw new Exception("No se como analizar la expreseion ")
+    })
+    respuesta = respuesta.filter(p => p.gravedad != Ok)
+    respuesta
+  }
+}
+
+object ChequeadorVariable {
+
+  def asignarReferencia(asignar: Asignar, programa: Programa): Unit = asignar match {
+    case Asignar(ref : Referencia, exp : Expresion) => reemplazarReferencia(ref, exp, programa)
+  }
+
+  def reemplazarReferencia(referencia : Referencia,expresion: Expresion, programa: Programa): Unit ={
+    programa.eliminarVariable(referencia.nombre)
+    programa.agregarVariable(Variable(referencia.nombre, expresion))
+  }
+  def buscarReferencia(referencia: Referencia, programa: Programa): Expresion = {
+    programa.variables.filter(v => v.nombre == referencia.nombre).head.valor
+  }
+  def buscarVariable(nombre : String, programa: Programa) : Variable ={
+    programa.variables.filter(v => v.nombre == nombre).head
+  }
+
+  def chequearDuplicado(programa: Programa, variable: Variable): Problema ={
+    var problema : Problema = Problema(Ok, "La variable no se encuentra duplicada", variable)
+    if(programa.variables.count(v => v.nombre == variable.nombre) > 1){
+      problema = Problema(Advertencia, "variable duplicada", variable)
+    }
+    problema
+  }
+
+  def chequearUsoVarableAntesDeDeclaracion(programa: Programa, referencia: Referencia) : Problema ={
+    var problema : Problema = Problema(Ok, "La variable no se usa antes de su declaracion", referencia)
+    if(programa.variables.contains(referencia.nombre)){
+      problema = Problema(Advertencia, "Esta referencia no se encuentra definida en una variable", referencia)
+    }
+    problema
+  }
+
+  def chequearReferenciaValida(referencia: Referencia, programa: Programa): Problema ={
+    var problema : Problema = Problema(Ok, "Es una referencia Valida", referencia)
+    if(!programa.variables.contains(referencia.nombre)){
+      problema = Problema(Advertencia, "Esta referencia no se encuentra definida en una variable", referencia)
+    }
+    problema
+  }
+}

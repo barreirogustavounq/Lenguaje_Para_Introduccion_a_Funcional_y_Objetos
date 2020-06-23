@@ -20,7 +20,6 @@ class VariableSpec extends AnyFunSpec with Matchers {
     }
 
     it("Creo una variable y lka llamo por la referencia") {
-      Referencia.clear()
       Variable("anioActual", Numero(2020))
       Variable("edad", Numero(27))
       Variable("anioNacimiento", Resta(Referencia("anioActual"), Referencia("edad")))
