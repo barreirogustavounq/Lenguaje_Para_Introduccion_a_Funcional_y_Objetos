@@ -2,9 +2,7 @@ package o3.expresiones
 
 import scala.collection.mutable
 
-class Variable(val nombre : String, var valor : Expresion) extends Expresion {
-
-}
+class Variable(val nombre : String, var valor : Expresion) extends Expresion
 
 object Variable {
   def apply(nombre: String, valor: Expresion): Variable = {

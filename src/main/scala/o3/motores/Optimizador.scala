@@ -2,12 +2,12 @@ package o3.motores
 
 import o3.Programa
 import o3.expresiones.Expresion
-import o3.reglamento.{Regla, Reglamento}
+import o3.reglamento.Regla
 
 class Optimizador() {
   def optimizarOperacion(expresion: Expresion, reglas : List[Regla]): Expresion = {
     var optimizaciones : List[Expresion] = List()
-    reglas.foreach(regla => optimizaciones = optimizaciones.appended(regla.optimizar(expresion)))
+    reglas.foreach(regla => optimizaciones = optimizaciones :+ regla.optimizar(expresion))
     optimizaciones.last
   }
   def optimizarPrograma(programa: Programa, reglas: List[Regla]): Unit ={

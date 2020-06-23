@@ -14,12 +14,13 @@ class analizadorSpec extends AnyFunSpec with Matchers {
   describe("Analizador") {
     it("Analiza las operaciones Suma, Resta, Multiplicacion y Division ") {
       val analizador = new Analizador
-      var operaciones : List[Operacion] = List()
-      operaciones = operaciones :+ Suma(Numero(2), Numero(0))
-      operaciones = operaciones :+ Resta(Numero(4), Numero(0))
-      operaciones = operaciones :+ Multiplicacion(Numero(1), Numero(4))
-      operaciones = operaciones :+ Division(Numero(4), Numero(0))
-      operaciones = operaciones :+ Division(Numero(4), Numero(1))
+      val operaciones : List[Operacion] = List(
+        Suma(Numero(2), Numero(0)),
+        Resta(Numero(4), Numero(0)),
+        Multiplicacion(Numero(1), Numero(4)),
+        Division(Numero(4), Numero(0)),
+        Division(Numero(4), Numero(1))
+      )
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = analizador.analizar(programa, List(DividicionPorCero, OperacionRedundante))
       resultadoDeEjecutarPrograma.head.head should equal(Problema(Advertencia, "operacion redundante: sumar 0 retorna el mismo numero", Suma(Numero(2), Numero(0))))
@@ -30,13 +31,14 @@ class analizadorSpec extends AnyFunSpec with Matchers {
     }
     it("Analiza las operaciones Mayor, Menor, Igual, Distinto, MayorOigual y MenorOIgual") {
       val analizador = new Analizador
-      var operaciones : List[Operacion] = List()
-      operaciones = operaciones :+ Mayor(Numero(2), Numero(0))
-      operaciones = operaciones :+ Menor(Numero(4), Numero(2))
-      operaciones = operaciones :+ Igual(Numero(1), Numero(4))
-      operaciones = operaciones :+ Distinto(Numero(4), Numero(0))
-      operaciones = operaciones :+ MayorOIgual(Numero(4), Numero(1))
-      operaciones = operaciones :+ MenorOIgual(Numero(1), Numero(1))
+      val operaciones : List[Operacion] = List(
+        Mayor(Numero(2), Numero(0)),
+        Menor(Numero(4), Numero(2)),
+        Igual(Numero(1), Numero(4)),
+        Distinto(Numero(4), Numero(0)),
+        MayorOIgual(Numero(4), Numero(1)),
+        MenorOIgual(Numero(1), Numero(1))
+      )
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = analizador.analizar(programa, List(ComparacionesSinSentido))
       resultadoDeEjecutarPrograma.head.head should equal(Problema(Advertencia, "comparación sin sentido: siempre retorna true", Mayor(Numero(2), Numero(0))))
