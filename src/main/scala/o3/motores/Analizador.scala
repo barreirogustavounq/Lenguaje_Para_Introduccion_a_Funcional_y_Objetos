@@ -2,18 +2,24 @@ package o3.motores
 
 import o3.Programa
 import o3.expresiones.Expresion
-import o3.reglamento.Reglamento
+import o3.gravedad.{Advertencia, Error}
+import o3.reglamento.{Regla}
 import o3.problemas.Problema
 
 class Analizador {
 
-  def analizarOperacion(expresion: Expresion) : Problema = {
-    val r = Reglamento.relgaPara(expresion)
-    r.aplicarRegla(expresion)
+  def analizarOperacion(expresion: Expresion, reglas : List[Regla]) : List[Problema] = {
+    var respuesta : List[Problema] = List()
+    reglas.foreach(r => r.aplicarRegla(expresion) match {
+      case Problema(Advertencia,_,_) => respuesta = respuesta.appended(r.aplicarRegla(expresion))
+      case Problema(Error,_,_) => respuesta = respuesta.appended(r.aplicarRegla(expresion))
+      case _ => None
+    })
+    respuesta
   }
 
-  def analizar(programa: Programa) : List[Problema] = {
-    programa.elementos.map(op => analizarOperacion(op))
+  def analizar(programa: Programa, reglas : List[Regla]) : List[List[Problema]] = {
+    programa.elementos.map(op => analizarOperacion(op, reglas))
   }
 }
 

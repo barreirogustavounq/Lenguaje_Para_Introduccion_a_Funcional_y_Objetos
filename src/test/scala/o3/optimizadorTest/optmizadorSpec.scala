@@ -1,8 +1,9 @@
 package o3.optimizadorTest
 
 import o3.Programa
+import o3.ReglasPredefinidas.{ComparacionesSinSentido, DividicionPorCero, OperacionRedundante}
 import o3.expresiones._
-import o3.motores.{Optimizador}
+import o3.motores.Optimizador
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -19,7 +20,7 @@ class optmizadorSpec extends AnyFunSpec with Matchers {
       operaciones = operaciones :+ MayorOIgual(Numero(4), Numero(1))
       operaciones = operaciones :+ MenorOIgual(Numero(1), Numero(1))
       val programa = Programa(operaciones)
-      optimizador.optimizarPrograma(programa)
+      optimizador.optimizarPrograma(programa, List(ComparacionesSinSentido))
       programa.elementos(0) should equal(Booleano(true))
       programa.elementos(1) should equal(Booleano(false))
       programa.elementos(2) should equal(Booleano(false))
@@ -36,7 +37,7 @@ class optmizadorSpec extends AnyFunSpec with Matchers {
       operaciones = operaciones :+ Division(Numero(4), Numero(0))
       operaciones = operaciones :+ Division(Numero(4), Numero(1))
       val programa = Programa(operaciones)
-      optimizador.optimizarPrograma(programa)
+      optimizador.optimizarPrograma(programa, List(DividicionPorCero, OperacionRedundante))
       programa.elementos(0) should equal(Numero(2))
       programa.elementos(1) should equal(Numero(4))
       programa.elementos(2) should equal(Numero(4))
