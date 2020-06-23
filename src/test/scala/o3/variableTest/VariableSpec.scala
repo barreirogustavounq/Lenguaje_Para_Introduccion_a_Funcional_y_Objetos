@@ -1,29 +1,64 @@
 package o3.variableTest
 
+import o3.Programa
 import o3.expresiones._
+import o3.gravedad.Advertencia
+import o3.problemas.Problema
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
 class VariableSpec extends AnyFunSpec with Matchers {
 
   describe("Variables") {
-    it("Excepcion al intentar crear variable con nombre existente") {
-      Variable("edad", Numero(27))
+    it("declaro dos variables con el mismo nombre") {
+      val analizadorChequeoDuplicado = new AnalizadorVariable()
+      val expresiones : List[Expresion] = List(Variable("edad", Numero(27)), Variable("edad", Numero(28)),Variable("anio", Numero(2020)) )
+      val programa : Programa = Programa(expresiones)
 
-      try Variable("edad", Numero(28))
-      catch {case e : ExcepcionVariableExistente => true}
+      val respuesta : List[Problema] = analizadorChequeoDuplicado.analizarVariablesDuplicadas(programa)
+      println(respuesta)
+      println(programa.variables)
+      respuesta.head should equal(Problema(Advertencia, "variable duplicada", Variable("edad", Numero(28))))
     }
 
-    it("Excepcion al intentar usar variable antes de su declarancion") {
-      try Referencia("noInicializada")
-      catch {case e : ExcepcionVariableInexistente => true}
+    it("Intento referencar una variable antes de declararla ") {
+      val analizadorVariable = new AnalizadorVariable()
+      val expresiones : List[Expresion] = List(Referencia("noInicializada"), Variable("edad", Numero(27)),Referencia("edad"), Variable("edad", Numero(28)),Variable("anio", Numero(2020)), Variable("noInicializada", Numero(0)))
+      val programa : Programa = Programa(expresiones)
+      val respuesta : List[Problema] = analizadorVariable.analizarUsoDeVariablesAntesDeSuDeclaracion(programa)
+      println(respuesta)
+      println(programa.variables)
+      respuesta.head should equal(Problema(Advertencia, "Esta referencia no se encuentra definida en una variable", Referencia("noInicializada")))
+
     }
 
-    it("Creo una variable y lka llamo por la referencia") {
-      Variable("anioActual", Numero(2020))
-      Variable("edad", Numero(27))
-      Variable("anioNacimiento", Resta(Referencia("anioActual"), Referencia("edad")))
-      Referencia("anioNacimiento") should equal(Resta(Numero(2020),Numero(27)))
+    it("detecto las varables que no se usan") {
+      val analizadorVariable = new AnalizadorVariable()
+      val expresiones : List[Expresion] = List(Referencia("noInicializada"),
+                                               Variable("edad", Numero(27)),
+                                               Referencia("edad"),
+                                               Variable("anio", Numero(2020)),
+                                               Variable("noInicializada", Numero(0))
+                                               )
+      val programa : Programa = Programa(expresiones)
+      val respuesta : List[Variable] = analizadorVariable.analizarVariablesDelaradasSinUso(programa)
+      println(respuesta)
+      println(programa.variables)
+      respuesta.head should equal(Variable("anio", Numero(2020)))
+    }
+    it("Chequeo Referencias Validas") {
+      val analizadorVariable = new AnalizadorVariable()
+      val expresiones : List[Expresion] = List(Referencia("noInicializada"),
+        Variable("edad", Numero(27)),
+        Referencia("edad"),
+        Variable("anio", Numero(2020)),
+        Variable("noInicializadas", Numero(0))
+      )
+      val programa : Programa = Programa(expresiones)
+      val respuesta : List[Problema] = analizadorVariable.analizarReferenciaValida(programa)
+      println(respuesta)
+      println(programa.variables)
+      respuesta.head should equal(Problema(Advertencia, "Esta referencia no se encuentra definida en una variable", Referencia("noInicializada")))
     }
   }
 }
