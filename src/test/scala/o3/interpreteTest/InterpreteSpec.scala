@@ -12,8 +12,8 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
     it("interprete ejecuta operación suma") {
       val interprete = new Interprete
       var operaciones: List[Operacion] = List()
-      operaciones = operaciones.appended(Suma(Numero(2), Numero(3)))
-      operaciones = operaciones.appended(Suma(Numero(4), Numero(2)))
+      operaciones = operaciones :+ Suma(Numero(2), Numero(3))
+      operaciones = operaciones :+ Suma(Numero(4), Numero(2))
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = interprete.ejecutar(programa)
       resultadoDeEjecutarPrograma(0) should equal(Numero(5))
@@ -22,8 +22,8 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
     it("interprete ejecuta operación resta") {
       val interprete = new Interprete
       var operaciones: List[Operacion] = List()
-      operaciones = operaciones.appended(Resta(Numero(7), Numero(3)))
-      operaciones = operaciones.appended(Resta(Numero(4), Numero(2)))
+      operaciones = operaciones :+ Resta(Numero(7), Numero(3))
+      operaciones = operaciones :+ Resta(Numero(4), Numero(2))
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = interprete.ejecutar(programa)
       resultadoDeEjecutarPrograma(0) should equal(Numero(4))
@@ -31,9 +31,10 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
     }
     it("interprete ejecuta operación Multuplicacion") {
       val interprete = new Interprete
-      var operaciones: List[Operacion] = List()
-      operaciones = operaciones.appended(Multiplicacion(Numero(7), Numero(3)))
-      operaciones = operaciones.appended(Multiplicacion(Numero(4), Numero(2)))
+      val operaciones: List[Operacion] = List(
+        Multiplicacion(Numero(7), Numero(3)),
+        Multiplicacion(Numero(4), Numero(2))
+      )
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = interprete.ejecutar(programa)
       resultadoDeEjecutarPrograma(0) should equal(Numero(21))
@@ -42,8 +43,8 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
     it("interprete ejecuta operación Division") {
       val interprete = new Interprete
       var operaciones: List[Operacion] = List()
-      operaciones = operaciones.appended(Division(Numero(12), Numero(3)))
-      operaciones = operaciones.appended(Division(Numero(4), Numero(2)))
+      operaciones = operaciones :+ Division(Numero(12), Numero(3))
+      operaciones = operaciones :+ Division(Numero(4), Numero(2))
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = interprete.ejecutar(programa)
       resultadoDeEjecutarPrograma(0) should equal(Numero(4))
@@ -52,20 +53,20 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
     it("interprete ejecuta operación Mayor, Menor, Igual, Distinto, MayorOIgual, MenorOIgual") {
       val interprete = new Interprete
       var operaciones: List[Operacion] = List()
-      operaciones = operaciones.appended(Mayor(Numero(12), Numero(3)))
-      operaciones = operaciones.appended(Mayor(Numero(4), Numero(8)))
-      operaciones = operaciones.appended(Menor(Numero(12), Numero(15)))
-      operaciones = operaciones.appended(Menor(Numero(4), Numero(1)))
-      operaciones = operaciones.appended(Igual(Numero(12), Numero(12)))
-      operaciones = operaciones.appended(Igual(Numero(4), Numero(1)))
-      operaciones = operaciones.appended(Distinto(Numero(11), Numero(12)))
-      operaciones = operaciones.appended(Distinto(Numero(4), Numero(4)))
-      operaciones = operaciones.appended(MayorOIgual(Numero(12), Numero(12)))
-      operaciones = operaciones.appended(MayorOIgual(Numero(12), Numero(11)))
-      operaciones = operaciones.appended(MayorOIgual(Numero(2), Numero(6)))
-      operaciones = operaciones.appended(MenorOIgual(Numero(11), Numero(11)))
-      operaciones = operaciones.appended(MenorOIgual(Numero(1), Numero(11)))
-      operaciones = operaciones.appended(MenorOIgual(Numero(28), Numero(6)))
+      operaciones = operaciones :+ Mayor(Numero(12), Numero(3))
+      operaciones = operaciones :+ Mayor(Numero(4), Numero(8))
+      operaciones = operaciones :+ Menor(Numero(12), Numero(15))
+      operaciones = operaciones :+ Menor(Numero(4), Numero(1))
+      operaciones = operaciones :+ Igual(Numero(12), Numero(12))
+      operaciones = operaciones :+ Igual(Numero(4), Numero(1))
+      operaciones = operaciones :+ Distinto(Numero(11), Numero(12))
+      operaciones = operaciones :+ Distinto(Numero(4), Numero(4))
+      operaciones = operaciones :+ MayorOIgual(Numero(12), Numero(12))
+      operaciones = operaciones :+ MayorOIgual(Numero(12), Numero(11))
+      operaciones = operaciones :+ MayorOIgual(Numero(2), Numero(6))
+      operaciones = operaciones :+ MenorOIgual(Numero(11), Numero(11))
+      operaciones = operaciones :+ MenorOIgual(Numero(1), Numero(11))
+      operaciones = operaciones :+ MenorOIgual(Numero(28), Numero(6))
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = interprete.ejecutar(programa)
       resultadoDeEjecutarPrograma(0) should equal(Booleano(true))
@@ -87,7 +88,7 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
       val interprete = new Interprete
       var operaciones: List[Operacion] = List()
       case class Desconocido(n1: Numero, n2: Numero) extends Operacion(n1, n2)
-      operaciones = operaciones.appended(Desconocido(Numero(12), Numero(4)))
+      operaciones = operaciones :+ Desconocido(Numero(12), Numero(4))
       val programa = Programa(operaciones)
       assertThrows[UnsupportedOperationException] {
        interprete.ejecutar(programa)

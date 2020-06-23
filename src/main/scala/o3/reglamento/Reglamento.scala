@@ -1,7 +1,7 @@
 package o3.reglamento
 
-import o3.ReglasPredefinidas.{ComparacionesSinSentido, DividicionPorCero, OperacionRedundante}
-import o3.expresiones.{Distinto, Division, Expresion, Igual, Mayor, MayorOIgual, Menor, MenorOIgual, Multiplicacion, Numero, Resta, Suma}
+import o3.ReglasPredefinidas._
+import o3.expresiones._
 
 /****************REGLAMENTO******************************/
 object  Reglamento {
