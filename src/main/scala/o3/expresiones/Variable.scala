@@ -15,7 +15,7 @@ case class Referencia(nombre : String) extends Expresion
 class ExcepcionVariableInexistente extends Exception
 class ExcepcionVariableExistente extends Exception
 
-object eliminadorDeVariablesSinUso {
+object EliminadorDeVariablesSinUso {
 
   def optimizar(programa: Programa, analizadorVariable: AnalizadorVariable): Unit ={
     analizadorVariable.analizarVariablesDelaradasSinUso(programa).foreach( v =>

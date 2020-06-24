@@ -96,7 +96,138 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
       )
       val programa = Programa(operaciones)
       assertThrows[UnsupportedOperationException] {
-       interprete.ejecutar(programa)
+        interprete.ejecutar(programa)
+      }
+    }
+  }
+  describe("Interprete con variables") {
+    it("interprete ejecuta operaciones con Variables (al ejecutar se guarda una variable)") {
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("edad", Numero(29)))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa)
+      println(programa.variables)
+      programa.variables.size should equal(1)
+      programa.variables.head should equal(Variable("edad", Numero(29)))
+    }
+    it("probando la funcionalidad de Asignar"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("edad", Numero(29)), Asignar(Referencia("edad"), Numero(30)))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa)
+      println(programa.variables)
+      programa.variables.size should equal(1)
+      programa.variables.head.valor should equal(Numero(30))
+    }
+
+    it("probando referencia con operacion Resta"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("edad", Numero(29)),
+                                              Variable("anioActual", Numero(2020)),
+                                              Resta(Referencia("anioActual"), Referencia("edad")))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa).last should equal(Numero(1991))
+      println(programa.variables)
+      programa.variables.size should equal(2)
+    }
+    it("probando referencia con operacion Suma"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("edad", Numero(29)),
+        Variable("anioNacimiento", Numero(1991)),
+        Suma(Referencia("anioNacimiento"), Referencia("edad")))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa).last should equal(Numero(2020))
+      println(programa.variables)
+      programa.variables.size should equal(2)
+    }
+    it("probando referencia con operacion multiplicacion"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("hora", Numero(4)),
+        Variable("minuto", Numero(60)),
+        Multiplicacion(Referencia("hora"), Referencia("minuto")))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa).last should equal(Numero(240))
+      println(programa.variables)
+      programa.variables.size should equal(2)
+    }
+    it("probando referencia con operacion Division"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("pizza", Numero(8)),
+        Variable("personas", Numero(2)),
+        Division(Referencia("pizza"), Referencia("personas")))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa).last should equal(Numero(4))
+      println(programa.variables)
+      programa.variables.size should equal(2)
+    }
+    it("probando referencia con operacion Mayor"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("8", Numero(8)),
+        Variable("2", Numero(2)), Variable("dos", Numero(2)),
+        Mayor(Referencia("8"), Referencia("2")))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa).last should equal(Booleano(true))
+      println(programa.variables)
+      programa.variables.size should equal(3)
+    }
+    it("probando referencia con operacion Menor"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("8", Numero(8)),
+        Variable("2", Numero(2)), Variable("dos", Numero(2)),
+        Menor(Referencia("8"), Referencia("2")))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa).last should equal(Booleano(false))
+      println(programa.variables)
+      programa.variables.size should equal(3)
+    }
+    it("probando referencia con operacion Igual"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("8", Numero(8)),
+        Variable("2", Numero(2)), Variable("dos", Numero(2)),
+        Igual(Referencia("8"), Referencia("2")))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa).last should equal(Booleano(false))
+      println(programa.variables)
+      programa.variables.size should equal(3)
+    }
+    it("probando referencia con operacion Distinto"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("8", Numero(8)),
+        Variable("2", Numero(2)), Variable("dos", Numero(2)),
+        Distinto(Referencia("8"), Referencia("2")))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa).last should equal(Booleano(true))
+      println(programa.variables)
+      programa.variables.size should equal(3)
+    }
+    it("probando referencia con operacion MayorOIgual"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("8", Numero(8)),
+        Variable("2", Numero(2)), Variable("dos", Numero(2)),
+        MayorOIgual(Referencia("8"), Referencia("2")))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa).last should equal(Booleano(true))
+      println(programa.variables)
+      programa.variables.size should equal(3)
+    }
+    it("probando referencia con operacion MenorOIgual"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("8", Numero(8)),
+        Variable("2", Numero(2)), Variable("dos", Numero(2)),
+        MenorOIgual(Referencia("8"), Referencia("2")))
+      val programa = Programa(operaciones)
+      interprete.ejecutar(programa).last should equal(Booleano(false))
+      println(programa.variables)
+      programa.variables.size should equal(3)
+    }
+    it("probando referencia con operacion desconocida"){
+      val interprete = new Interprete
+      val operaciones: List[Expresion] = List(Variable("8", Numero(8)),
+        Variable("2", Numero(2)), Variable("dos", Numero(2)),
+        Menor(Referencia("8"), Referencia("no existe")))
+      val programa = Programa(operaciones)
+      assertThrows[UnsupportedOperationException] {
+        interprete.ejecutar(programa)
       }
     }
   }

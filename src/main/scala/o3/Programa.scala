@@ -6,8 +6,13 @@ case class Programa(expresiones : List[Expresion]) {
   var variables : List[Variable] = List()
   var elementos : List[Expresion] = expresiones
 
-  def getValor(referencia: String): Expresion ={
-    variables.filter(p=> p.nombre == referencia).head
+  def getValor(referencia: String): Expresion = {
+    val a : List[Variable] = variables.filter(p=> p.nombre == referencia)
+    if(!a.isEmpty){
+        a.head.valor
+    }else{
+      throw new UnsupportedOperationException("no existe variable con esa referencia")
+    }
   }
   def reemplazarReferencia(referencia : Referencia,expresion: Expresion): Variable ={
     eliminarVariable(referencia.nombre)
