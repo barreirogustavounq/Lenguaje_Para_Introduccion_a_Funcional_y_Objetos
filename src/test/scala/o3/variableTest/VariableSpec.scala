@@ -65,7 +65,6 @@ class VariableSpec extends AnyFunSpec with Matchers {
   describe("Optimizador de Variables") {
     it("Elimino variables Repetidas") {
       val analizadorVarible = new AnalizadorVariable()
-      val interprete = new Interprete
       val expresiones : List[Expresion] = List(Variable("edad", Numero(27)),Variable("anio", Numero(2020)), Referencia("edad") )
       val programa : Programa = Programa(expresiones)
 

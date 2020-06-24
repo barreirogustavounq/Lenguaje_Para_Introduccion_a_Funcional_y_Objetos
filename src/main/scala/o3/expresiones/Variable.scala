@@ -1,11 +1,11 @@
 package o3.expresiones
 
 import o3.Programa
-import o3.gravedad.{Advertencia, Ok, Error}
+import o3.gravedad.{Advertencia, Ok}
 import o3.problemas.Problema
 
 
-case class Variable(val nombre : String, var valor : Expresion) extends Expresion
+case class Variable( nombre : String, var valor : Expresion) extends Expresion
 
 
 case class Asignar(referencia: Referencia, valor : Expresion) extends Expresion
