@@ -1,3 +1,3 @@
 package o3.expresiones
 
-trait Expresion
+abstract class Expresion

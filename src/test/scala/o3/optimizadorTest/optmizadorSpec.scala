@@ -22,12 +22,12 @@ class optmizadorSpec extends AnyFunSpec with Matchers {
       )
       val programa = Programa(operaciones)
       optimizador.optimizarPrograma(programa, List(ComparacionesSinSentido))
-      programa.elementos(0) should equal(Booleano(true))
-      programa.elementos(1) should equal(Booleano(false))
-      programa.elementos(2) should equal(Booleano(false))
-      programa.elementos(3) should equal(Booleano(true))
-      programa.elementos(4) should equal(Booleano(true))
-      programa.elementos(5) should equal(Booleano(true))
+      programa.elementos(0) should equal(True)
+      programa.elementos(1) should equal(False)
+      programa.elementos(2) should equal(False)
+      programa.elementos(3) should equal(True)
+      programa.elementos(4) should equal(True)
+      programa.elementos(5) should equal(True)
     }
     it("Optimiza las operaciones Suma, Resta, Multiplicacion y Division  ") {
       val optimizador = new Optimizador

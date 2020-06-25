@@ -73,24 +73,24 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
       )
       val programa = Programa(operaciones)
       val resultadoDeEjecutarPrograma = interprete.ejecutar(programa)
-      resultadoDeEjecutarPrograma(0) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(1) should equal(Booleano(false))
-      resultadoDeEjecutarPrograma(2) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(3) should equal(Booleano(false))
-      resultadoDeEjecutarPrograma(4) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(5) should equal(Booleano(false))
-      resultadoDeEjecutarPrograma(6) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(7) should equal(Booleano(false))
-      resultadoDeEjecutarPrograma(8) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(9) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(10) should equal(Booleano(false))
-      resultadoDeEjecutarPrograma(11) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(12) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(13) should equal(Booleano(false))
+      resultadoDeEjecutarPrograma(0) should equal(True)
+      resultadoDeEjecutarPrograma(1) should equal(False)
+      resultadoDeEjecutarPrograma(2) should equal(True)
+      resultadoDeEjecutarPrograma(3) should equal(False)
+      resultadoDeEjecutarPrograma(4) should equal(True)
+      resultadoDeEjecutarPrograma(5) should equal(False)
+      resultadoDeEjecutarPrograma(6) should equal(True)
+      resultadoDeEjecutarPrograma(7) should equal(False)
+      resultadoDeEjecutarPrograma(8) should equal(True)
+      resultadoDeEjecutarPrograma(9) should equal(True)
+      resultadoDeEjecutarPrograma(10) should equal(False)
+      resultadoDeEjecutarPrograma(11) should equal(True)
+      resultadoDeEjecutarPrograma(12) should equal(True)
+      resultadoDeEjecutarPrograma(13) should equal(False)
     }
     it("interprete ejecuta operación desconocida") {
       val interprete = new Interprete
-      case class Desconocido(n1: Numero, n2: Numero) extends Operacion(n1, n2)
+      case class Desconocido(n1: Numero, n2: Numero) extends Operacion
       val operaciones: List[Operacion] = List(
         Desconocido(Numero(12), Numero(4))
       )
@@ -166,7 +166,7 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
         Variable("2", Numero(2)), Variable("dos", Numero(2)),
         Mayor(Referencia("8"), Referencia("2")))
       val programa = Programa(operaciones)
-      interprete.ejecutar(programa).last should equal(Booleano(true))
+      interprete.ejecutar(programa).last should equal(True)
       println(programa.variables)
       programa.variables.size should equal(3)
     }
@@ -176,7 +176,7 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
         Variable("2", Numero(2)), Variable("dos", Numero(2)),
         Menor(Referencia("8"), Referencia("2")))
       val programa = Programa(operaciones)
-      interprete.ejecutar(programa).last should equal(Booleano(false))
+      interprete.ejecutar(programa).last should equal(False)
       println(programa.variables)
       programa.variables.size should equal(3)
     }
@@ -186,7 +186,7 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
         Variable("2", Numero(2)), Variable("dos", Numero(2)),
         Igual(Referencia("8"), Referencia("2")))
       val programa = Programa(operaciones)
-      interprete.ejecutar(programa).last should equal(Booleano(false))
+      interprete.ejecutar(programa).last should equal(False)
       println(programa.variables)
       programa.variables.size should equal(3)
     }
@@ -196,7 +196,7 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
         Variable("2", Numero(2)), Variable("dos", Numero(2)),
         Distinto(Referencia("8"), Referencia("2")))
       val programa = Programa(operaciones)
-      interprete.ejecutar(programa).last should equal(Booleano(true))
+      interprete.ejecutar(programa).last should equal(True)
       println(programa.variables)
       programa.variables.size should equal(3)
     }
@@ -206,7 +206,7 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
         Variable("2", Numero(2)), Variable("dos", Numero(2)),
         MayorOIgual(Referencia("8"), Referencia("2")))
       val programa = Programa(operaciones)
-      interprete.ejecutar(programa).last should equal(Booleano(true))
+      interprete.ejecutar(programa).last should equal(True)
       println(programa.variables)
       programa.variables.size should equal(3)
     }
@@ -216,7 +216,7 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
         Variable("2", Numero(2)), Variable("dos", Numero(2)),
         MenorOIgual(Referencia("8"), Referencia("2")))
       val programa = Programa(operaciones)
-      interprete.ejecutar(programa).last should equal(Booleano(false))
+      interprete.ejecutar(programa).last should equal(False)
       println(programa.variables)
       programa.variables.size should equal(3)
     }

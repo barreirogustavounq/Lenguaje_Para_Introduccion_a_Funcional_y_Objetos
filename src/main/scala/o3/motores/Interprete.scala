@@ -12,12 +12,12 @@ class Interprete {
     case Division(Numero(n1), Numero(n2)) => Numero(n1 / n2)
     case Numero(n) => Numero(n)
     case Referencia(nombre) => programa.getValor(nombre)
-    case Mayor(Numero(n1), Numero(n2)) => Booleano(n1 > n2)
-    case Menor(Numero(n1), Numero(n2)) => Booleano(n1 < n2)
-    case Igual(Numero(n1), Numero(n2)) => Booleano(n1 == n2)
-    case Distinto(Numero(n1), Numero(n2)) => Booleano(n1 != n2)
-    case MayorOIgual(Numero(n1), Numero(n2)) => Booleano(n1 >= n2)
-    case MenorOIgual(Numero(n1), Numero(n2)) => Booleano(n1 <= n2)
+    case Mayor(Numero(n1), Numero(n2)) => if (n1 > n2) True else False
+    case Menor(Numero(n1), Numero(n2)) => if (n1 < n2) True else False
+    case Igual(Numero(n1), Numero(n2)) => if (n1 == n2) True else False
+    case Distinto(Numero(n1), Numero(n2)) => if (n1 != n2) True else False
+    case MayorOIgual(Numero(n1), Numero(n2)) => if (n1 >= n2) True else False
+    case MenorOIgual(Numero(n1), Numero(n2)) => if (n1 <= n2) True else False
     case Variable(n,v) => programa.agregarVariable(Variable(n,v))
     case Asignar(ref, valor) => programa.reemplazarReferencia(ref, valor)
     case Suma(Referencia(n1), Numero(n2)) =>ejecutarOperacion(Suma(programa.getValor(n1), Numero(n2)), programa)

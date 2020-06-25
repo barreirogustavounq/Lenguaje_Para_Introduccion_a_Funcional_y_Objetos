@@ -23,18 +23,18 @@ object ComparacionesSinSentido extends Regla {
   }
 
   override def optimizar(expresion: Expresion): Expresion = expresion match {
-    case Mayor(Numero(n1), Numero(n2))if n1 > n2 => Booleano(true)
-    case Mayor(Numero(n1), Numero(n2))if !(n1 > n2) => Booleano(false)
-    case Menor(Numero(n1), Numero(n2))if n1 < n2 => Booleano(true)
-    case Menor(Numero(n1), Numero(n2))if !(n1 < n2)=> Booleano(false)
-    case Igual(Numero(n1), Numero(n2))if n1 == n2 => Booleano(true)
-    case Igual(Numero(n1), Numero(n2))if !(n1 == n2)=> Booleano(false)
-    case Distinto(Numero(n1), Numero(n2))if n1 != n2 => Booleano(true)
-    case Distinto(Numero(n1), Numero(n2))if n1 == n2 =>Booleano(false)
-    case MayorOIgual(Numero(n1), Numero(n2))if n1 >= n2 => Booleano(true)
-    case MayorOIgual(Numero(n1), Numero(n2))if !(n1 >= n2)=>Booleano(false)
-    case MenorOIgual(Numero(n1), Numero(n2))if n1 <= n2 => Booleano(true)
-    case MenorOIgual(Numero(n1), Numero(n2))if !(n1 <= n2)=>Booleano(false)
+    case Mayor(Numero(n1), Numero(n2)) => if (n1 > n2) True else False
+    case Mayor(Numero(n1), Numero(n2)) => if (!(n1 > n2)) True else False
+    case Menor(Numero(n1), Numero(n2)) => if (n1 < n2) True else False
+    case Menor(Numero(n1), Numero(n2)) => if (!(n1 < n2)) True else False
+    case Igual(Numero(n1), Numero(n2)) => if (n1 == n2) True else False
+    case Igual(Numero(n1), Numero(n2)) => if (!(n1 == n2)) True else False
+    case Distinto(Numero(n1), Numero(n2)) => if (n1 != n2) True else False
+    case Distinto(Numero(n1), Numero(n2)) => if (n1 == n2) True else False
+    case MayorOIgual(Numero(n1), Numero(n2)) => if (n1 >= n2) True else False
+    case MayorOIgual(Numero(n1), Numero(n2)) => if (!(n1 >= n2)) True else False
+    case MenorOIgual(Numero(n1), Numero(n2)) => if (n1 <= n2) True else False
+    case MenorOIgual(Numero(n1), Numero(n2)) => if (!(n1 <= n2)) True else False
     case _ => expresion
   }
 }

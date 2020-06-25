@@ -1,3 +1,5 @@
 package o3.expresiones
 
-case class Booleano(b: Boolean) extends Expresion
+abstract class Booleano extends Expresion
+object True extends Booleano
+object False extends Booleano
