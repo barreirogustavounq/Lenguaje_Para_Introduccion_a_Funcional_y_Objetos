@@ -1,33 +1,12 @@
 package o3
 
-import o3.expresiones.{Expresion, Referencia, Variable}
+import o3.expresiones._
+import o3.motores.Contexto
 
-case class Programa(expresiones : List[Expresion]) {
-  var variables : List[Variable] = List()
-  var elementos : List[Expresion] = expresiones
-
-  def getValor(referencia: String): Expresion = {
-    val a : List[Variable] = variables.filter(p=> p.nombre == referencia)
-    if(!a.isEmpty){
-        a.head.valor
-    }else{
-      throw new UnsupportedOperationException("no existe variable con esa referencia")
+case class Programa(sentencias: Sentencia*) extends SentenciaCompuesta(sentencias: _*) {
+  override def ejecutar(contexto: Contexto = Contexto()): Valor = {
+    sentenciasHijas.foldLeft(Nulo(): Valor) {
+      (_, s) => s.ejecutar(contexto)
     }
-  }
-  def reemplazarReferencia(referencia : Referencia,expresion: Expresion): Variable ={
-    eliminarVariable(referencia.nombre)
-    agregarVariable(Variable(referencia.nombre, expresion))
-    Variable(referencia.nombre, expresion)
-  }
-
-  def agregarVariable(variable: Variable): Variable ={
-    variables = variables.appended(variable)
-    variable
-  }
-  def eliminarVariable(nombreVar: String): Unit ={
-    variables = variables.filter(v => v.nombre != nombreVar)
-  }
-  def remplazarOperaciones(list: List[Expresion]): Unit ={
-    elementos = list
   }
 }

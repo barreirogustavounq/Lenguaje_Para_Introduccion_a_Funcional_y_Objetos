@@ -1,40 +1,36 @@
 package o3.ReglasPredefinidas
 
+import o3.{Programa, Sentencia}
 import o3.expresiones._
-import o3.gravedad.{Advertencia, Ok}
+import o3.gravedad.NivelAdvertencia
+import o3.motores.OptimizadorT
 import o3.problemas.Problema
 import o3.reglamento.Regla
 
-object ComparacionesSinSentido extends Regla {
-  override def aplicarRegla(expresion: Expresion): Problema = expresion match {
-    case Mayor(Numero(n1), Numero(n2)) if n1 > n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
-    case Mayor(Numero(n1), Numero(n2)) if !(n1 > n2) => Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
-    case Menor(Numero(n1), Numero(n2)) if n1 < n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
-    case Menor(Numero(n1), Numero(n2)) if !(n1 < n2) => Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
-    case Igual(Numero(n1), Numero(n2)) if n1 == n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
-    case Igual(Numero(n1), Numero(n2)) if !(n1 == n2)=> Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
-    case Distinto(Numero(n1), Numero(n2)) if n1 != n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
-    case Distinto(Numero(n1), Numero(n2)) if n1 == n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
-    case MayorOIgual(Numero(n1), Numero(n2)) if n1 >= n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
-    case MayorOIgual(Numero(n1), Numero(n2)) if !(n1 >= n2)=> Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
-    case MenorOIgual(Numero(n1), Numero(n2)) if n1 <= n2 => Problema(Advertencia, "comparación sin sentido: siempre retorna true", expresion)
-    case MenorOIgual(Numero(n1), Numero(n2)) if !(n1 <= n2)=> Problema(Advertencia, "comparación sin sentido: siempre retorna false", expresion)
-    case _ => Problema(Ok, "no hay problemas en la operacion", expresion)
+case class ComparacionesSinSentido() extends Regla("Comparación sin sentido", NivelAdvertencia()) with OptimizadorT {
+  val fn: PartialFunction[(Programa, Sentencia), Option[Problema]] = {
+    case ps@(_, _: Comparacion) => ps._2 match {
+      case Igual(_: Literal, _: Literal) => errorDetectado(ps._2)
+      case Distinto(_: Literal, _: Literal) => errorDetectado(ps._2)
+      case Mayor(_: Literal, _: Literal) => errorDetectado(ps._2)
+      case Menor(_: Literal, _: Literal) => errorDetectado(ps._2)
+      case MayorOIgual(_: Literal, _: Literal) => errorDetectado(ps._2)
+      case MenorOIgual(_: Literal, _: Literal) => errorDetectado(ps._2)
+    }
   }
 
-  override def optimizar(expresion: Expresion): Expresion = expresion match {
-    case Mayor(Numero(n1), Numero(n2)) => if (n1 > n2) True else False
-    case Mayor(Numero(n1), Numero(n2)) => if (!(n1 > n2)) True else False
-    case Menor(Numero(n1), Numero(n2)) => if (n1 < n2) True else False
-    case Menor(Numero(n1), Numero(n2)) => if (!(n1 < n2)) True else False
-    case Igual(Numero(n1), Numero(n2)) => if (n1 == n2) True else False
-    case Igual(Numero(n1), Numero(n2)) => if (!(n1 == n2)) True else False
-    case Distinto(Numero(n1), Numero(n2)) => if (n1 != n2) True else False
-    case Distinto(Numero(n1), Numero(n2)) => if (n1 == n2) True else False
-    case MayorOIgual(Numero(n1), Numero(n2)) => if (n1 >= n2) True else False
-    case MayorOIgual(Numero(n1), Numero(n2)) => if (!(n1 >= n2)) True else False
-    case MenorOIgual(Numero(n1), Numero(n2)) => if (n1 <= n2) True else False
-    case MenorOIgual(Numero(n1), Numero(n2)) => if (!(n1 <= n2)) True else False
-    case _ => expresion
+  def errorDetectado(s: Sentencia): Option[Problema] = {
+    Some(new Problema(this, gravedad, s))
+  }
+
+  def optimizar(s: Sentencia): Sentencia = {
+    s match {
+      case s@Igual(_: Literal, _: Literal) => s.ejecutar()
+      case s@Distinto(_: Literal, _: Literal) => s.ejecutar()
+      case s@Mayor(_: Literal, _: Literal) => s.ejecutar()
+      case s@Menor(_: Literal, _: Literal) => s.ejecutar()
+      case s@MayorOIgual(_: Literal, _: Literal) => s.ejecutar()
+      case s@MenorOIgual(_: Literal, _: Literal) => s.ejecutar()
+    }
   }
 }
