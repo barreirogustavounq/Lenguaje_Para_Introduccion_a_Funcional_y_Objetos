@@ -54,28 +54,39 @@ class analizadorSpec extends AnyFunSpec with Matchers {
 
     it("ComparacionesSinSentido: detectar 1 == 1") {
       val p = Programa(Igual(Numero(1), Numero(1)))
-      AnalizadorCon(ComparacionesSinSentido()).analizar(p).size should be(1)
-
+      val res = AnalizadorCon(ComparacionesSinSentido()).analizar(p)
+      res.size should be(1)
+      res.head.toString should equal("Advertencia | Comparación sin sentido -> Igual(Numero(1),Numero(1))")
     }
     it("detectar 1 != 1") {
       val p = Programa(Distinto(Numero(1), Numero(1)))
-      AnalizadorCon(ComparacionesSinSentido()).analizar(p).size should be(1)
+      val res = AnalizadorCon(ComparacionesSinSentido()).analizar(p)
+      res.size should be(1)
+      res.head.toString should equal("Advertencia | Comparación sin sentido -> Distinto(Numero(1),Numero(1))")
     }
     it("detectar 2 > 1") {
       val p = Programa(Mayor(Numero(2), Numero(1)))
-      AnalizadorCon(ComparacionesSinSentido()).analizar(p).size should be(1)
+      val res = AnalizadorCon(ComparacionesSinSentido()).analizar(p)
+      res.size should be(1)
+      res.head.toString should equal("Advertencia | Comparación sin sentido -> Mayor(Numero(2),Numero(1))")
     }
     it("detectar 2 >= 1") {
       val p = Programa(MayorOIgual(Numero(2), Numero(1)))
-      AnalizadorCon(ComparacionesSinSentido()).analizar(p).size should be(1)
+      val res = AnalizadorCon(ComparacionesSinSentido()).analizar(p)
+      res.size should be(1)
+      res.head.toString should equal("Advertencia | Comparación sin sentido -> MayorOIgual(Numero(2),Numero(1))")
     }
     it("detectar 1 < 3") {
       val p = Programa(Menor(Numero(1), Numero(3)))
-      AnalizadorCon(ComparacionesSinSentido()).analizar(p).size should be(1)
+      val res =AnalizadorCon(ComparacionesSinSentido()).analizar(p)
+      res.size should be(1)
+      res.head.toString should equal("Advertencia | Comparación sin sentido -> Menor(Numero(1),Numero(3))")
     }
     it("detectar 1 <= 3") {
       val p = Programa(MenorOIgual(Numero(1), Numero(3)))
-      AnalizadorCon(ComparacionesSinSentido()).analizar(p).size should be(1)
+      val res = AnalizadorCon(ComparacionesSinSentido()).analizar(p)
+      res.size should be(1)
+      res.head.toString should equal("Advertencia | Comparación sin sentido -> MenorOIgual(Numero(1),Numero(3))")
     }
 
     it("ReglaVariableDuplicada:  detectar una variable duplicada") {
@@ -83,7 +94,7 @@ class analizadorSpec extends AnyFunSpec with Matchers {
       val p = Programa(s, s)
       val res = AnalizadorCon(ReglaVariableDuplicada()).analizar(p)
       res.size should be(2)
-      assert(res.head.sentencia == s)
+      res.head.toString should equal("Advertencia | Variable duplicada -> Variable(a,null)")
     }
 
     it("ReglaVariableDuplicada:  no detectar una variable no duplicada") {
@@ -96,12 +107,14 @@ class analizadorSpec extends AnyFunSpec with Matchers {
       val p = Programa(r, Variable("a"))
       val res = AnalizadorCon(ReglaReferenciaAVariableNoDeclarada()).analizar(p)
       res.size should be(1)
-      assert(res.head.sentencia == r)
+      res.head.toString should equal("Advertencia | Referencia a variable no declarada -> Referencia(a)")
     }
 
     it("no detectar referencia a una variable declarada") {
       val p = Programa(Referencia("a"), Variable("b"), Referencia("b"))
-      AnalizadorCon(ReglaReferenciaAVariableNoDeclarada()).analizar(p).size should be(1)
+      val res = AnalizadorCon(ReglaReferenciaAVariableNoDeclarada()).analizar(p)
+      res.size should be(1)
+      res.head.toString should equal("Advertencia | Referencia a variable no declarada -> Referencia(a)")
     }
 
     it("detectar referencia a una variable no declarada dentro de una operacion") {
@@ -109,7 +122,7 @@ class analizadorSpec extends AnyFunSpec with Matchers {
       val p = Programa(Suma(Referencia("b"), Numero(0)), Variable("b", Numero(2)))
        val res = AnalizadorCon(ReglaReferenciaAVariableNoDeclarada()).analizar(p)
       res.size should be(1)
-      assert(res.head.sentencia == s)
+      res.head.toString should equal("Advertencia | Referencia a variable no declarada -> Referencia(b)")
     }
 
     it("ReglaVariableDeclaradaSinUso: detectar una variable sin uso") {
@@ -117,7 +130,7 @@ class analizadorSpec extends AnyFunSpec with Matchers {
       val p = Programa(Suma(Numero(4), Numero(0)), s)
       val res = AnalizadorCon(ReglaVariableDeclaradaSinUso()).analizar(p)
       res.size should be(1)
-      assert(res.head.sentencia == s)
+      res.head.toString should equal("Advertencia | Variable declarada sin uso -> Variable(b,null)")
     }
 
     it("no detectar una variable en uso") {
@@ -135,6 +148,9 @@ class analizadorSpec extends AnyFunSpec with Matchers {
       )
       val problemas = AnalizadorCon(ReglaNoSumarCero(), ComparacionesSinSentido()).analizar(p)
       problemas.size should be(3)
+      problemas.head.toString should equal("Advertencia | No sumar cero -> Suma(Numero(0),Numero(1))")
+      problemas(1).toString should equal("Advertencia | No sumar cero -> Suma(Numero(1),Numero(0))")
+      problemas(2).toString should equal("Advertencia | Comparación sin sentido -> Igual(Numero(1),Numero(1))")
     }
   }
 }
