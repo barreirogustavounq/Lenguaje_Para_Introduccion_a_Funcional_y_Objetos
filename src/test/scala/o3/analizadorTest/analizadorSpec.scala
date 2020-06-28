@@ -11,7 +11,7 @@ import org.scalatest.matchers.should.Matchers
 
 class analizadorSpec extends AnyFunSpec with Matchers {
 
-  val cualquierNumero: Numero = Numero(1)
+  val otroNumero: Numero = Numero(1)
 
   def AnalizadorCon(reglas: Regla*): Analizador = {
     Analizador(reglas.toList)
@@ -20,8 +20,8 @@ class analizadorSpec extends AnyFunSpec with Matchers {
   describe("Analizador") {
     it("ReglaNoSumarCero: detectar si un operando es 0") {
       val p = Programa(
-        Suma(Numero(0), cualquierNumero),
-        Suma(cualquierNumero, Numero(0)),
+        Suma(Numero(0), otroNumero),
+        Suma(otroNumero, Numero(0)),
         Suma(Numero(1), Numero(1))
       )
       val problemas = AnalizadorCon(ReglaNoSumarCero()).analizar(p)
@@ -32,8 +32,8 @@ class analizadorSpec extends AnyFunSpec with Matchers {
 
     it("ReglaNoRestarCero: detectar si el segundo operando es 0") {
       val p = Programa(
-        Resta(Numero(0), cualquierNumero),
-        Resta(cualquierNumero, Numero(0)),
+        Resta(Numero(0), otroNumero),
+        Resta(otroNumero, Numero(0)),
         Resta(Numero(1), Numero(1))
       )
       val problemas = AnalizadorCon(ReglaNoRestarCero()).analizar(p)
@@ -43,8 +43,8 @@ class analizadorSpec extends AnyFunSpec with Matchers {
 
     it("ReglaNoMultiplicarPorUno: detectar si un operando es 1") {
       val p = Programa(
-        Multiplicacion(Numero(1), cualquierNumero),
-        Multiplicacion(cualquierNumero, Numero(1)),
+        Multiplicacion(Numero(1), otroNumero),
+        Multiplicacion(otroNumero, Numero(1)),
         Multiplicacion(Numero(2), Numero(2))
       )
       val problemas = AnalizadorCon(ReglaNoMultiplicarPorUno()).analizar(p)
@@ -107,7 +107,7 @@ class analizadorSpec extends AnyFunSpec with Matchers {
     it("detectar referencia a una variable no declarada dentro de una operacion") {
       val s = Referencia("b")
       val p = Programa(Suma(Referencia("b"), Numero(0)), Variable("b", Numero(2)))
-      val res = AnalizadorCon(ReglaReferenciaAVariableNoDeclarada()).analizar(p)
+       val res = AnalizadorCon(ReglaReferenciaAVariableNoDeclarada()).analizar(p)
       res.size should be(1)
       assert(res.head.sentencia == s)
     }
@@ -126,10 +126,10 @@ class analizadorSpec extends AnyFunSpec with Matchers {
       AnalizadorCon(ReglaVariableDeclaradaSinUso()).analizar(p).size should be(0)
     }
 
-    it("Un checkeador con ReglaNoSumarCero y ComparacionesSinSentido: detectar ambas cosas") {
+    it("ReglaNoSumarCero y ComparacionesSinSentido: detectar ambas cosas") {
       val p = Programa(
-        Suma(Numero(0), cualquierNumero),
-        Suma(cualquierNumero, Numero(0)),
+        Suma(Numero(0), otroNumero),
+        Suma(otroNumero, Numero(0)),
         Suma(Numero(1), Numero(1)),
         Igual(Numero(1), Numero(1))
       )

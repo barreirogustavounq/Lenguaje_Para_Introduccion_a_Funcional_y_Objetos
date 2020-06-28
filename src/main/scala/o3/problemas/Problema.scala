@@ -8,12 +8,12 @@ class Problema(val regla: Regla, val gravedad: Gravedad, val sentencia: Sentenci
     s"$gravedad | $descripcion -> $sentencia"
   }
 
-  def descripcion = regla.mensaje
+  def descripcion: String = regla.mensaje
 }
 
-case class Error(_regla: Regla, sent: Sentencia) extends Problema(_regla, NivelError(), sent)
+case class Error(_regla: Regla, s: Sentencia) extends Problema(_regla, NivelError(), s)
 
-case class Advertencia(_regla: Regla, sent: Sentencia) extends Problema(_regla, NivelAdvertencia(), sent)
+case class Advertencia(_regla: Regla, s: Sentencia) extends Problema(_regla, NivelAdvertencia(), s)
 
 object ProblemaConRegla {
   def unapply(arg: Problema): Option[(Regla, Sentencia)] = Some(arg.regla, arg.sentencia)

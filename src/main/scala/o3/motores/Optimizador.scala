@@ -21,7 +21,7 @@ trait OptimizadorT {
 }
 
 case class Optimizador(_reglas: Regla with OptimizadorT*) {
-  val analizador = Analizador(_reglas.toList)
+  val analizador: Analizador = Analizador(_reglas.toList)
 
   def optimizar(programa: Programa): Programa = {
     analizador.analizar(programa).foldLeft(programa: Programa) { (z, problema) => problema match {

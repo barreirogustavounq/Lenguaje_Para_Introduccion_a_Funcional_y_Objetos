@@ -4,14 +4,14 @@ import o3.excepciones.{ExcepcionVariableNoAsignada, ExcepcionVariableNoDeclarada
 import o3.expresiones.{Referencia, Valor}
 
 case class Contexto(var referencias: Map[String, Option[Valor]] = Map()) {
-  def asignar(referencia: Referencia, valor: Valor) = {
+  def asignar(referencia: Referencia, valor: Valor): Unit = {
     referencias.get(referencia.nombre) match {
       case None => throw new ExcepcionVariableNoDeclarada
       case Some(_) => referencias += (referencia.nombre -> Some(valor))
     }
   }
 
-  def declarar(nombre: String, valor: Option[Valor]) = {
+  def declarar(nombre: String, valor: Option[Valor]): Unit = {
     referencias += (nombre -> valor)
   }
 

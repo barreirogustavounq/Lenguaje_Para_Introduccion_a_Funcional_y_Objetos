@@ -9,7 +9,3 @@ case class NivelAdvertencia() extends Gravedad {
 case class NivelError() extends Gravedad{
   override def toString: String = "Error"
 }
-
-case class Ok() extends Gravedad{
-  override def toString: String = "Ok"
-}
