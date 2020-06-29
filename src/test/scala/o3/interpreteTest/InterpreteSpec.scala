@@ -1,7 +1,7 @@
 package o3.interpreteTest
 
 import o3.Programa
-import o3.expresiones.{Division, Multiplicacion, Nulo, Numero, Referencia, Resta, Suma, Valor}
+import o3.expresiones.{Booleano, Division, Igual, Multiplicacion, Nulo, Numero, Referencia, Resta, Suma, Valor}
 import o3.motores.Interprete
 import o3.variables.Variable
 import org.scalatest.funspec.AnyFunSpec
@@ -53,6 +53,19 @@ class InterpreteSpec extends AnyFunSpec with Matchers {
       val p = Programa(Variable("var", Numero(1)), Suma(Numero(-7), Referencia("var")))
       val r: Valor = Interprete().ejecutar(p)
       r should be(Numero(-6))
+    }
+
+    it("ejecutar operacion con variable que referencia a otras variables") {
+      val seq = Seq(
+        Variable("anioActual", Numero(2020)),
+        Variable("edad", Numero(28)),
+        Variable("anioNacimiento", Resta(Referencia("anioActual"), Referencia("edad"))),
+        Igual(Referencia("anioNacimiento"), Numero(1992))
+      )
+
+      val p = Programa(seq: _*)
+      val r: Valor = Interprete().ejecutar(p)
+      assert(r == Booleano(true))
     }
   }
 }
