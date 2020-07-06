@@ -1,19 +1,33 @@
 package o3.motores
 
-import o3.Programa
-import o3.expresiones.Expresion
+import o3.problemas.ProblemaConRegla
 import o3.reglamento.Regla
+import o3.{Programa, Sentencia, SentenciaCompuesta, SentenciaSimple}
 
-class Optimizador() {
-  def optimizarOperacion(expresion: Expresion, reglas : List[Regla]): Expresion = {
-    var optimizaciones : List[Expresion] = List()
-    reglas.foreach(regla => optimizaciones = optimizaciones :+ regla.optimizar(expresion))
-    optimizaciones.last
+trait OptimizadorT {
+  def optimizar(s: Sentencia): Sentencia
+
+  def optimizar(p: Programa, s: Sentencia): Programa = {
+    Programa(reemplazarSentencia(p.sentenciasHijas, optimizar(s)): _*)
   }
-  def optimizarPrograma(programa: Programa, reglas: List[Regla]): Unit ={
-    val optimizacion = programa.elementos.map(e => optimizarOperacion(e, reglas))
-    programa.remplazarOperaciones(optimizacion)
+
+  def reemplazarSentencia(ls: List[Sentencia], sentencia: Sentencia): List[Sentencia] = {
+    ls.map {
+      case s@(ss: SentenciaSimple) => if (ss == s) sentencia else s
+      case s@(sc: SentenciaCompuesta) =>
+        if (sc == s) sentencia else sc.modificarYRetornar(reemplazarSentencia(sc.sentenciasHijas, sentencia))
+    }
   }
 }
 
+case class Optimizador(_reglas: Regla with OptimizadorT*) {
+  val analizador: Analizador = Analizador(_reglas.toList)
 
+  def optimizar(programa: Programa): Programa = {
+    analizador.analizar(programa).foldLeft(programa: Programa) { (z, problema) => problema match {
+      case ProblemaConRegla(r: Regla with OptimizadorT, s) => r.optimizar(z, s)
+      case _ => z
+    }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+package o3.excepciones
+
+class ExcepcionVariableInexistente extends Exception
+class ExcepcionVariableExistente extends Exception
+class ExcepcionVariableNoDeclarada extends Exception
+class ExcepcionVariableNoAsignada extends Exception

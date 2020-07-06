@@ -1,103 +1,71 @@
 package o3.interpreteTest
 
 import o3.Programa
-import o3.expresiones._
+import o3.expresiones.{Booleano, Division, Igual, Multiplicacion, Nulo, Numero, Referencia, Resta, Suma, Valor}
 import o3.motores.Interprete
+import o3.variables.Variable
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
 class InterpreteSpec extends AnyFunSpec with Matchers {
 
   describe("Interprete") {
-    it("interprete ejecuta operación suma") {
-      val interprete = new Interprete
-      val operaciones: List[Operacion] = List(
-        Suma(Numero(2), Numero(3)),
-        Suma(Numero(4), Numero(2))
-      )
-      val programa = Programa(operaciones)
-      val resultadoDeEjecutarPrograma = interprete.ejecutar(programa)
-      resultadoDeEjecutarPrograma(0) should equal(Numero(5))
-      resultadoDeEjecutarPrograma(1) should equal(Numero(6))
+    val n4= Numero(4)
+    val n3= Numero(3)
+
+    it("ejecutar 3+4 y devolver 7") {
+      val p = Programa(Suma(n3, n4))
+      val r: Valor = Interprete().ejecutar(p)
+      r should be (Numero(7))
     }
-    it("interprete ejecuta operación resta") {
-      val interprete = new Interprete
-      val operaciones: List[Operacion] = List(
-        Resta(Numero(7), Numero(3)),
-        Resta(Numero(4), Numero(2))
-      )
-      val programa = Programa(operaciones)
-      val resultadoDeEjecutarPrograma = interprete.ejecutar(programa)
-      resultadoDeEjecutarPrograma(0) should equal(Numero(4))
-      resultadoDeEjecutarPrograma(1) should equal(Numero(2))
+
+    it("ejecutar Variable('var') y devolver Nulo") {
+      val p = Programa(Variable("var"))
+      val r: Valor = Interprete().ejecutar(p)
+      r should be(Nulo())
     }
-    it("interprete ejecuta operación Multuplicacion") {
-      val interprete = new Interprete
-      val operaciones: List[Operacion] = List(
-        Multiplicacion(Numero(7), Numero(3)),
-        Multiplicacion(Numero(4), Numero(2))
-      )
-      val programa = Programa(operaciones)
-      val resultadoDeEjecutarPrograma = interprete.ejecutar(programa)
-      resultadoDeEjecutarPrograma(0) should equal(Numero(21))
-      resultadoDeEjecutarPrograma(1) should equal(Numero(8))
+
+    it("ejecutar Variable('var',9-1) y devolver Nulo") {
+      val p = Programa(Variable("var", Resta(Numero(9), Numero(1))))
+      val r: Valor = Interprete().ejecutar(p)
+      r should be(Nulo())
     }
-    it("interprete ejecuta operación Division") {
-      val interprete = new Interprete
-      val operaciones: List[Operacion] = List(
-        Division(Numero(12), Numero(3)),
-        Division(Numero(4), Numero(2))
-      )
-      val programa = Programa(operaciones)
-      val resultadoDeEjecutarPrograma = interprete.ejecutar(programa)
-      resultadoDeEjecutarPrograma(0) should equal(Numero(4))
-      resultadoDeEjecutarPrograma(1) should equal(Numero(2))
+
+    it("ejecutar (9-1)-2 y devolver 6") {
+      val p = Programa(Resta(Resta(Numero(9), Numero(1)), Numero(2)))
+      val r: Valor = Interprete().ejecutar(p)
+      r should be(Numero(6))
     }
-    it("interprete ejecuta operación Mayor, Menor, Igual, Distinto, MayorOIgual, MenorOIgual") {
-      val interprete = new Interprete
-      val operaciones: List[Operacion] = List(
-        Mayor(Numero(12), Numero(3)),
-        Mayor(Numero(4), Numero(8)),
-        Menor(Numero(12), Numero(15)),
-        Menor(Numero(4), Numero(1)),
-        Igual(Numero(12), Numero(12)),
-        Igual(Numero(4), Numero(1)),
-        Distinto(Numero(11), Numero(12)),
-        Distinto(Numero(4), Numero(4)),
-        MayorOIgual(Numero(12), Numero(12)),
-        MayorOIgual(Numero(12), Numero(11)),
-        MayorOIgual(Numero(2), Numero(6)),
-        MenorOIgual(Numero(11), Numero(11)),
-        MenorOIgual(Numero(1), Numero(11)),
-        MenorOIgual(Numero(28), Numero(6))
-      )
-      val programa = Programa(operaciones)
-      val resultadoDeEjecutarPrograma = interprete.ejecutar(programa)
-      resultadoDeEjecutarPrograma(0) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(1) should equal(Booleano(false))
-      resultadoDeEjecutarPrograma(2) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(3) should equal(Booleano(false))
-      resultadoDeEjecutarPrograma(4) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(5) should equal(Booleano(false))
-      resultadoDeEjecutarPrograma(6) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(7) should equal(Booleano(false))
-      resultadoDeEjecutarPrograma(8) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(9) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(10) should equal(Booleano(false))
-      resultadoDeEjecutarPrograma(11) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(12) should equal(Booleano(true))
-      resultadoDeEjecutarPrograma(13) should equal(Booleano(false))
+
+    it("ejecutar 9/3 y devolver 3") {
+      val p = Programa(Division(Numero(9), Numero(3)))
+      val r: Valor = Interprete().ejecutar(p)
+      r should be(Numero(3))
     }
-    it("interprete ejecuta operación desconocida") {
-      val interprete = new Interprete
-      case class Desconocido(n1: Numero, n2: Numero) extends Operacion(n1, n2)
-      val operaciones: List[Operacion] = List(
-        Desconocido(Numero(12), Numero(4))
+
+    it("ejecutar 2*4 y devolver 8") {
+      val p = Programa(Multiplicacion(Numero(2), Numero(4)))
+      val r: Valor = Interprete().ejecutar(p)
+      r should be(Numero(8))
+    }
+
+    it("ejecutar var=1; -7+var; y devolver -6") {
+      val p = Programa(Variable("var", Numero(1)), Suma(Numero(-7), Referencia("var")))
+      val r: Valor = Interprete().ejecutar(p)
+      r should be(Numero(-6))
+    }
+
+    it("ejecutar operacion con variable que referencia a otras variables") {
+      val seq = Seq(
+        Variable("anioActual", Numero(2020)),
+        Variable("edad", Numero(28)),
+        Variable("anioNacimiento", Resta(Referencia("anioActual"), Referencia("edad"))),
+        Igual(Referencia("anioNacimiento"), Numero(1992))
       )
-      val programa = Programa(operaciones)
-      assertThrows[UnsupportedOperationException] {
-       interprete.ejecutar(programa)
-      }
+
+      val p = Programa(seq: _*)
+      val r: Valor = Interprete().ejecutar(p)
+      assert(r == Booleano(true))
     }
   }
 }

@@ -1,10 +1,12 @@
 package o3
 
-import o3.expresiones.Expresion
+import o3.expresiones._
+import o3.motores.Contexto
 
-case class Programa(expresiones : List[Expresion]) {
-  var elementos : List[Expresion] = expresiones
-  def remplazarOperaciones(list: List[Expresion]): Unit ={
-    elementos = list
+case class Programa(sentencias: Sentencia*) extends SentenciaCompuesta(sentencias: _*) {
+  override def ejecutar(contexto: Contexto = Contexto()): Valor = {
+    sentenciasHijas.foldLeft(Nulo(): Valor) {
+      (_, s) => s.ejecutar(contexto)
+    }
   }
 }
